@@ -33,7 +33,13 @@ function addCliente() {
 
 	var relevanciaCliente = document.createElement("td");
 	relevanciaCliente.setAttribute("class", "relevancia");
-	relevanciaCliente.innerHTML = relevancia;
+
+	if ($.isNumeric(relevancia)) {
+		relevanciaCliente.innerHTML = relevancia;
+	} else {
+		relevancia = "1"
+		relevanciaCliente.innerHTML = 1;
+	}
 
 	fila.append(relevanciaCliente);
 
@@ -70,7 +76,12 @@ function addRequisito() {
 	$("#nombreColumnas").append(prioridadAux);
 
 	var sumaEsfuerzo = document.createElement("td");
-	sumaEsfuerzo.innerHTML = $("#relevanciaAddModal").val();
+
+	if ($.isNumeric($("#relevanciaAddModal").val())) {
+		sumaEsfuerzo.innerHTML = $("#relevanciaAddModal").val();
+	} else {
+		sumaEsfuerzo.innerHTML = 0;
+	}
 
 	var prioridadTotal = $("#prioridadTotal");
 	$("#prioridadTotal").remove();
@@ -99,6 +110,19 @@ function addRequisito() {
 		$("#" + clientes[j].idFila).append(rec1);
 		$("#" + clientes[j].idFila).append(relevanciaCliente);
 	}
+
+
+	var requi = document.createElement("tr");
+	var identifier = document.createElement("td");
+	var nomReq = document.createElement("td");
+
+	identifier.innerHTML = etiqueta;
+	requi.append(identifier);
+
+	nomReq.innerHTML = nombre;
+	requi.append(nomReq);
+
+	$("#tablaReq").append(requi);
 
 	hideModal();
 }
@@ -142,7 +166,11 @@ function cogerValorRequisitosCliente(cliente) {
 	var valores = []
 
 	$("#" + cliente.idFila + " :input").each(function () {
-		valores.push($(this).val());
+		if ($(this).val().length == 0 || !$.isNumeric($(this).val())) {
+			valores.push("0")
+		} else {
+			valores.push($(this).val());
+		}
 	});
 
 	return valores;
@@ -186,13 +214,13 @@ function hideModal() {
 }
 
 function calcularTodo() {
-	
+
 	var requisitosFinales = [];
 
 	for (var i = 0; i < requisitos.length; i++) {
 		requisitosFinales.push(addReqConValor(requisitos[i]));
 	}
-	var sol = calcularRequisitos(requisitosFinales, parseInt($("#limiteEsfuerzo").val())); 
+	var sol = calcularRequisitos(requisitosFinales, parseInt($("#limiteEsfuerzo").val()));
 
 	$("#satisfaccionTotal").text(sol.maxValue);
 
@@ -214,13 +242,33 @@ function calcularTodo() {
 
 	$("#requisitosFinales").text(requisitosOptimos);
 
+
+	var maxContribuidor = clientes[0];
+	var contribuidor = 0;
+	for (var i = 0; i < clientes.length; i++) {
+		var contr = contribucion(clientes[i], sol.subset);
+		if (contr > contribuidor) {
+			contribuidor = contr;
+			maxContribuidor = clientes[i];
+		}
+	}
+	$("#contribucion").text(maxContribuidor.nombre);
 }
 
-function addReqConValor(reqisito) {
+function contribucion(cliente, solucion) {
+	var valores = cogerValorRequisitosCliente(cliente);
+	var suma = 0;
+	for (var i = 0; i < valores.length; i++) {
+			suma += parseInt(valores[i]);
+	}
+	return suma * parseInt(cliente.relevancia);
+}
+
+function addReqConValor(requisito) {
 	var req = {
-		nombre: reqisito.etiqueta,
-		esfuerzo: reqisito.esfuerzo, //w o peso
-		satisfaccionDelRequisito: calcularSatisfaccionRequisito(reqisito) //la suma del (requisito * pesoDelCliente) de todos los clientes
+		nombre: requisito.etiqueta,
+		esfuerzo: requisito.esfuerzo, //w o peso
+		satisfaccionDelRequisito: calcularSatisfaccionRequisito(requisito) //la suma del (requisito * pesoDelCliente) de todos los clientes
 	};
 	return req;
 }
@@ -286,3 +334,7 @@ function calcularRequisitos(totalRequisitos, esfuerzoMaximo) {
 		}
 	}
 }
+
+$(document).ready(function () {
+	$("#limiteEsfuerzo").val('');
+});
