@@ -1,14 +1,14 @@
-async function realizarConsulta(ubicacion, consulta){
+async function realizarConsulta(ubicacion, consulta) {
 	var datosProcesados = null;
-    await $.post(ubicacion, consulta,
-    function(data,status){
-      //console.log(data);
-      if(data==""||data==null||data=="Fallo") datosProcesados=null;
-      else datosProcesados= JSON.parse(data);
-    });
-    if(datosProcesados==null) return null;
-    return datosProcesados;
-  }
+	await $.post(ubicacion, consulta,
+		function (data, status) {
+			//console.log(data);
+			if (data == "" || data == null || data == "Fallo") datosProcesados = null;
+			else datosProcesados = JSON.parse(data);
+		});
+	if (datosProcesados == null) return null;
+	return datosProcesados;
+}
 //ubicacion=(await realizarConsulta("apis/busqueda/buscarUbicacion.php",{idUbicacion: objeto.Ubicacion_idUbicacion}))[0];
 
 function addCliente(nombre, relevancia, idCliente) {
@@ -57,14 +57,14 @@ async function anadirCliente(nombre, relevancia) {
 	var cliente = {
 		nombre: nombre,
 		relevancia: relevancia,
-		Proyecto_idProyecto : idProyecto
+		Proyecto_idProyecto: idProyecto
 	};
 
 	await anadirDato("Cliente", cliente);
 }
 
 function addRequisito(nombre, relevancia) {
-	
+
 	var long = requisitos[requisitos.length - 1];
 	var etiqueta = "R" + (requisitos.length == 0 ? 0 : parseInt(long.idRequisito.substring(10, long.idRequisito.length - 1)));
 
@@ -139,7 +139,7 @@ async function anadirRequisito(nombre, esfuerzo) {
 	var requisito = {
 		nombre: nombre,
 		esfuerzo: esfuerzo,
-		Proyecto_idProyecto : idProyecto,
+		Proyecto_idProyecto: idProyecto,
 		resuleto: 1
 	};
 
@@ -190,21 +190,21 @@ function cogerValorClienteRequisitos(requisito) {
 }
 
 function showModal(clirec) {
-	if (clirec==0) {
+	if (clirec == 0) {
 		$("#nombreAddModal").val("");
 		$("#segundoCampo").text("Relevancia");
 		$("#relevanciaAddModal").attr("placeholder", "Relevancia");
 		$("#relevanciaAddModal").val("");
 		$("#tituloModal").text("Añadir cliente");
 		$("#añadirModal").attr("onclick", "crearCliente()");
-	} else if(clirec==2) {
+	} else if (clirec == 2) {
 		$("#nombreAddModal").val("");
 		$("#segundoCampo").text("Límite de esfuerzo");
 		$("#relevanciaAddModal").attr("placeholder", "Límite de esfuerzo");
 		$("#relevanciaAddModal").val("");
 		$("#tituloModal").text("Crear proyecto");
 		$("#añadirModal").attr("onclick", "crearProyecto()");
-	}else{
+	} else {
 		$("#nombreAddModal").val("");
 		$("#segundoCampo").text("Esfuerzo");
 		$("#relevanciaAddModal").attr("placeholder", "Esfuerzo");
@@ -265,7 +265,7 @@ function contribucion(cliente, solucion) {
 	var valores = cogerValorRequisitosCliente(cliente);
 	var suma = 0;
 	for (var i = 0; i < valores.length; i++) {
-			suma += parseInt(valores[i]);
+		suma += parseInt(valores[i]);
 	}
 	return suma * parseInt(cliente.relevancia);
 }
@@ -345,16 +345,20 @@ $(document).ready(function () {
 	$("#limiteEsfuerzo").val('');
 });
 
-function crearProyecto(){
+function crearProyecto() {
 	var nombre = $("#nombreAddModal").val();
 	var limiteEsfuerzo = $("#relevanciaAddModal").val();
 
-	if(nombre==""||limiteEsfuerzo=="") return;
+	if (nombre == "" || limiteEsfuerzo == "") return;
 
-	anadirDato("Proyecto",{nombre : nombre, limiteEsfuerzo : limiteEsfuerzo});
+	anadirDato("Proyecto", { nombre: nombre, limiteEsfuerzo: limiteEsfuerzo });
 }
-
-async function cargarDatos(){
+var tablaCopiadisima = document.getElementById("resetearTabla");
+async function cargarDatos() {
+	//
+	document.getElementById("resetearTabla").innerHTML="";
+	$("#resetearTabla").append(tablaCopiadisima);
+	//$("#tablaCopia").clone().appendTo($("#resetearTabla"));
 	await cargarValores();
 
 	if (clientes == null) clientes = [];
@@ -362,24 +366,24 @@ async function cargarDatos(){
 	if (requisitos == null) requisitos = [];
 	if (valoraciones == null) valoraciones = [];
 
-	if (clientes.length != 0){
-		for (var t in clientes){
-			await addCliente(clientes[t].nombre, clientes[t].relevancia, clientes[t].idCliente);
-		}
-	}
-	if (requisitos.length != 0){
-		for (var r in requisitos){
+	if (requisitos.length != 0) {
+		for (var r in requisitos) {
 			await addRequisito(requisitos[r].nombre, requisitos[r].esfuerzo);
 		}
 	}
-	
-	if(valoraciones.length!=0){
-		var valores= [requisitos.length];
-		for (o=0; o<clientes.length; o++){
-			for (l=0; l<requisitos.length; l++){
+	if (clientes.length != 0) {
+		for (var t in clientes) {
+			await addCliente(clientes[t].nombre, clientes[t].relevancia, clientes[t].idCliente);
+		}
+	}
+
+	if (valoraciones.length != 0) {
+		var valores = [requisitos.length];
+		for (o = 0; o < clientes.length; o++) {
+			for (l = 0; l < requisitos.length; l++) {
 				valores[l] = 0;
-				for (h=0; h<valoraciones.length; h++){
-					if(clientes[o].idCliente==valoraciones.Cliente_idCliente&&requisitos[l].idRequisito==valoraciones.Requisito_idRequisito){
+				for (h = 0; h < valoraciones.length; h++) {
+					if (clientes[o].idCliente == valoraciones.Cliente_idCliente && requisitos[l].idRequisito == valoraciones.Requisito_idRequisito) {
 						valores[l] = valoraciones[h];
 						break;
 					}
@@ -392,29 +396,29 @@ async function cargarDatos(){
 }
 
 function asignarValorRequisitosCliente(cliente, valores) {
-	var k=0
+	var k = 0
 	$("#" + cliente.idCliente + " :input").each(function () {
 		$(this).val() = valores[k];
 		k++;
 	});
 }
 
-async function crearCliente(){
+async function crearCliente() {
 	var nombre = $("#nombreAddModal").val();
 	var relevancia = $("#relevanciaAddModal").val();
 
-	if(nombre==""||relevancia=="") return;
+	if (nombre == "" || relevancia == "") return;
 
-	
+
 	await anadirCliente(nombre, relevancia);
 	addCliente(nombre, relevancia);
 }
 
-async function crearRequisito(){
+async function crearRequisito() {
 	var nombre = $("#nombreAddModal").val();
 	var relevancia = $("#relevanciaAddModal").val();
 
-	if(nombre==""||relevancia=="") return;
+	if (nombre == "" || relevancia == "") return;
 
 	await anadirRequisito(nombre, relevancia);
 	addRequisito(nombre, relevancia);

@@ -47,9 +47,9 @@ var idProyecto=<?php echo $_GET["idProyecto"];?>;
 					<button type="submit" class="btn btn-primary mx-2">Borrar todo
 					</button>
 				</div>
-				
+				<br><br><h3>Tabla de valores</h3><br>
+				<div id="resetearTabla">
 				<table class="table table-sm" id="tabla">
-					<h3>Tabla de valores</h3><br>
 					<thead>
 						<tr id="nombreColumnas">
 							<th scope="col">Clientes</th>
@@ -65,6 +65,7 @@ var idProyecto=<?php echo $_GET["idProyecto"];?>;
 						<td id="prioridadTotal">X</td>
 					</tr>
 				</table>
+				</div>
 
 			</div>
 
@@ -151,3 +152,22 @@ var idProyecto=<?php echo $_GET["idProyecto"];?>;
 		</div>
 	</div>
 </div>
+<div  style="visibility:hidden" >
+<table class="table table-sm" id="tablaCopia">
+					<h3>Tabla de valores</h3><br>
+					<thead>
+						<tr id="nombreColumnas">
+							<th scope="col">Clientes</th>
+							<th scope="col" class="prioridadCliente">Wi</th>
+						</tr>
+					</thead>
+					<tbody id="filaClientes">
+						<!--Siempre última fila-->
+					</tbody>
+					<tr id="esfuerzoRequisito">
+						<!--Siempre el mismo valor-->
+						<th scope="row">Ef</th>
+						<td id="prioridadTotal">X</td>
+					</tr>
+				</table>
+			</div>
