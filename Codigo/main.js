@@ -1,3 +1,15 @@
+async function realizarConsulta(ubicacion, consulta){
+    await $.post(ubicacion, consulta,
+    function(data,status){
+      //console.log(data);
+      if(data==""||data==null||data=="Fallo") datosProcesados=null;
+      else datosProcesados= JSON.parse(data);
+    });
+    if(datosProcesados==null) return null;
+    return datosProcesados;
+  }
+//ubicacion=(await realizarConsulta("apis/busqueda/buscarUbicacion.php",{idUbicacion: objeto.Ubicacion_idUbicacion}))[0];
+
 var clientes = [];
 var requisitos = [];
 
