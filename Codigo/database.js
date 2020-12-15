@@ -9,10 +9,10 @@ var valoraciones = null;
 async function cargarValores(){
     if(idProyecto==null) return;
  
-    clientes = await realizarConsulta("apis/busqueda/buscarCliente.php",{Proyecto_idProyecto: idProyecto});
-    relaciones = await realizarConsulta("apis/busqueda/buscarRelacion.php",{Proyecto_idProyecto: idProyecto});
-    requisitos = await realizarConsulta("apis/busqueda/buscarRequisito.php",{Proyecto_idProyecto: idProyecto});
-    valoraciones = await realizarConsulta("apis/busqueda/buscarValoracion.php",{Proyecto_idProyecto: idProyecto});
+    clientes = await realizarConsulta("api/busqueda/buscarCliente.php",{Proyecto_idProyecto: idProyecto});
+    relaciones = await realizarConsulta("api/busqueda/buscarRelacion.php",{Proyecto_idProyecto: idProyecto});
+    requisitos = await realizarConsulta("api/busqueda/buscarRequisito.php",{Proyecto_idProyecto: idProyecto});
+    valoraciones = await realizarConsulta("api/busqueda/buscarValoracion.php",{Proyecto_idProyecto: idProyecto});
 }
 
 
