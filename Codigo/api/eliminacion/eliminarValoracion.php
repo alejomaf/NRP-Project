@@ -4,8 +4,5 @@ include "../../connection/checkLogin.php";
 include "../utilities/eliminaciones.php";
 //-------------------------------------------------------\\
 
-$idConfiguracion=$_POST["idConfiguracion"];
-
-eliminarDatos("configuracion", "idConfiguracion", $_POST["idConfiguracion"], $conn);
-
+eliminarDatos("valoracion", "idValoracion", $_POST["idValoracion"], $conn);
 ?>

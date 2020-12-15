@@ -1,4 +1,5 @@
 async function realizarConsulta(ubicacion, consulta){
+	var datosProcesados = null;
     await $.post(ubicacion, consulta,
     function(data,status){
       //console.log(data);
@@ -201,21 +202,26 @@ function cogerValorClienteRequisitos(requisito) {
 }
 
 function showModal(clirec) {
-	if (clirec) {
+	if (clirec==0) {
 		$("#nombreAddModal").val("");
 		$("#segundoCampo").text("Relevancia");
 		$("#relevanciaAddModal").attr("placeholder", "Relevancia");
 		$("#relevanciaAddModal").val("");
 		$("#tituloModal").text("Añadir cliente");
-
 		$("#añadirModal").attr("onclick", "addCliente()");
-	} else {
+	} else if(clirec==2) {
+		$("#nombreAddModal").val("");
+		$("#segundoCampo").text("Límite de esfuerzo");
+		$("#relevanciaAddModal").attr("placeholder", "Límite de esfuerzo");
+		$("#relevanciaAddModal").val("");
+		$("#tituloModal").text("Crear proyecto");
+		$("#añadirModal").attr("onclick", "crearProyecto()");
+	}else{
 		$("#nombreAddModal").val("");
 		$("#segundoCampo").text("Esfuerzo");
 		$("#relevanciaAddModal").attr("placeholder", "Esfuerzo");
 		$("#relevanciaAddModal").val("");
 		$("#tituloModal").text("Añadir requisito");
-
 		$("#añadirModal").attr("onclick", "addRequisito()");
 	}
 	$("#ventanaFlotante").modal("show");
@@ -350,3 +356,12 @@ function calcularRequisitos(totalRequisitos, esfuerzoMaximo) {
 $(document).ready(function () {
 	$("#limiteEsfuerzo").val('');
 });
+
+function crearProyecto(){
+	var nombre = $("#nombreAddModal").val();
+	var limiteEsfuerzo = $("#relevanciaAddModal").val();
+
+	if(nombre==""||limiteEsfuerzo=="") return;
+
+	anadirDato("Proyecto",{nombre : nombre, limiteEsfuerzo : limiteEsfuerzo});
+}
