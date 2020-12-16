@@ -7,12 +7,12 @@ include "../utilities/modificaciones.php";
 
 $modificacion="";
 
-$idCliente=$_POST["idCliente"];
+$idRequisito=$_POST["idRequisito"];
 
-anadirAModificacionTexto("nombre", "nombre");
-anadirAModificacionTexto("relevancia", "relevancia");
-anadirAModificacionNumero("idCliente", "idCliente");
+anadirAModificacionTexto("nombre","nombre");
+anadirAModificacionNumero("esfuerzo","esfuerzo");
 anadirAModificacionNumero("Proyecto_idProyecto","Proyecto_idProyecto");
+anadirAModificacionNumero("resuelto","resuelto");
 
-mostrarDatos("cliente", "idCliente", $idCliente, $conn);
+mostrarDatos("requisito", "idRequisito", $idRequisito, $conn);
 ?>

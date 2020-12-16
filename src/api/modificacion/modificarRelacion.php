@@ -12,7 +12,6 @@ $idRelacion=$_POST["idRelacion"];
 anadirAModificacionNumero("Requisito_idRequisito","Requisito_idRequisito");
 anadirAModificacionNumero("Requisito_idRequisito1","Requisito_idRequisito1");
 anadirAModificacionNumero("relacion","relacion");
-anadirAModificacionNumero("idRelacion","idRelacion");
 
 mostrarDatos("relacion", "idRelacion", $idRelacion, $conn);
 ?>

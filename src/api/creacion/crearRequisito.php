@@ -13,4 +13,5 @@ anadirACreacionNumero("Proyecto_idProyecto","Proyecto_idProyecto");
 anadirACreacionNumero("resuelto","resuelto");
 
 crearDatos("requisito", $conn);
+
 ?>
