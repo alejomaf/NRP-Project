@@ -90,17 +90,10 @@ function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 	var nombreRequisito = document.createElement("th");
 	nombreRequisito.setAttribute("style", "cursor:pointer");
 	nombreRequisito.setAttribute("onclick", "verInformacion(1,'" + nombre + "'," + relevancia + ", " + idRequisito + "," + resuelto + ")");
-	//Añadir onclick
-
+	
 	nombreRequisito.setAttribute("scope", "col");
 	nombreRequisito.innerHTML = etiqueta;
-	/*
-		//añadir checkBox
-		var check = document.createElement("input");
-		check.setAttribute("id", "sinGuardar");
-		check.setAttribute("type", "checkbox");
-		nombreRequisito.append();
-	*/
+
 
 	var prioridadAux = $("#nombreColumnas .prioridadCliente");
 	$("#nombreColumnas .prioridadCliente").remove();

@@ -12,11 +12,12 @@
 </head>
 
 <script>
-var idProyecto=<?php echo $_GET["idProyecto"];?>;
+	var idProyecto = <?php echo $_GET["idProyecto"]; ?>;
 </script>
+
 <body style="background-color:#fbedff">
-	
-	
+
+
 	<br>
 	<div class="d-flex justify-content-center">
 		<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
@@ -35,7 +36,7 @@ var idProyecto=<?php echo $_GET["idProyecto"];?>;
 				<label>Introduce el límite de satisfacción</label>
 				<input type="text" class="form-control" id="limiteSatisfaccion" placeholder="WIP debido a optimizaciones">
 			</div>
-			
+
 			<div>
 				<div class="btn btn-group w-100">
 					<button type="button" class="btn btn-primary mx-2" onclick="showModal(0)">Añadir cliente
@@ -107,13 +108,13 @@ var idProyecto=<?php echo $_GET["idProyecto"];?>;
 					</tbody>
 				</table>
 			</div>
-			
+
 			<br>
 			<div class="d-flex justify-content-center">
 				<h2 class="font-weight-bold"> Requisitos </h2>
 			</div>
 			<br>
-			
+
 			<div>
 				<table class="table table-sm" id="tablaReq">
 					<tr>
@@ -123,61 +124,90 @@ var idProyecto=<?php echo $_GET["idProyecto"];?>;
 				</table>
 			</div>
 
-		</div>
-	</div>
-	<div id="ventanaFlotante" class="modal" tabindex="-1" role="dialog">
-	<div class="modal-dialog" role="document">
-	<div class="modal-content">
-		<div>
-			<div class="m-2 w-100 text-content-center">
-			<h4 class="text-center" id="tituloModal">Añadir</h4>
-			</div>
-			<div class="form-group m-1">
-				<label for="formGroupExampleInput" id="primerCampo">Nombre</label>
-				<input type="text" class="form-control" id="nombreAddModal" placeholder="Nombre">
-			</div>
-			<div class="form-group m-1">
-				<label for="formGroupExampleInput2" id="segundoCampo">Relevancia</label>
-				<input type="number" class="form-control" id="relevanciaAddModal" placeholder="Relevancia">
-			</div>
-			<div class="btn-group w-100">
-				<button type="button" id="añadirModal" class="btn btn-primary m-2">Añadir</button>
-				<button type="button" class="btn btn-secondary m-2" onclick="hideModal()">Cancelar</button>
-			</div>
-		</div>
 
+			<!--TABLA DE RELACIONES-->
+			<br>
+			<div class="d-flex justify-content-center">
+				<h2 class="font-weight-bold"> Relaciones </h2>
+			</div>
+			<br>
+
+			<table class="table table-sm" id="tablaRelaciones">
+				<thead>
+					<tr id="nombreColumnasRelaciones">
+						<th scope="col">Clientes\Relaciones</th>
+						<th scope="col" class="prioridadClienteRelacion">Wi</th>
+					</tr>
+				</thead>
+				<tbody id="filaClientesRelaciones">
+					<tr id="esfuerzoRequisitoRelacion">
+						<!--Siempre el mismo valor-->
+						<th scope="row">Ef</th>
+						<td id="prioridadTotalRelacion">X</td>
+					</tr>
+				</tbody>
+			</table>
+					
 		</div>
 	</div>
-</div>
+
+	<br>
+
+
+
+	<div id="ventanaFlotante" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div>
+					<div class="m-2 w-100 text-content-center">
+						<h4 class="text-center" id="tituloModal">Añadir</h4>
+					</div>
+					<div class="form-group m-1">
+						<label for="formGroupExampleInput" id="primerCampo">Nombre</label>
+						<input type="text" class="form-control" id="nombreAddModal" placeholder="Nombre">
+					</div>
+					<div class="form-group m-1">
+						<label for="formGroupExampleInput2" id="segundoCampo">Relevancia</label>
+						<input type="number" class="form-control" id="relevanciaAddModal" placeholder="Relevancia">
+					</div>
+					<div class="btn-group w-100">
+						<button type="button" id="añadirModal" class="btn btn-primary m-2">Añadir</button>
+						<button type="button" class="btn btn-secondary m-2" onclick="hideModal()">Cancelar</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 </body>
 
 <div id="informacionObjeto" class="modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
-	<div class="modal-content">
-		<div>
-		<div class="m-2 w-100 text-content-center">
-		<h4 class="text-center" id="tituloModalInfo">Modificar o eliminar elemento</h4>
-		</div>
-		<div class="form-group m-1">
-			<label for="formGroupExampleInput" id="nombreNameInfo">Nombre</label>
-			<input type="text" class="form-control" id="nombreInfo">
-		</div>
-		<div class="form-group m-1">
-			<label for="formGroupExampleInput2" id="relevanciaNameInfo">Relevancia</label>
-			<input type="number" class="form-control" id="relevanciaInfo">
-		</div>
-		<div id="formularioResuelto" class="form-check">
-			<input class="form-check-input" type="checkbox" value="" id="resueltoInfo">
-			<label class="form-check-label">
-				Resuelto
-			</label>
-		</div>
-		<div class="btn-group w-100">
-			<button type="button" id="editInfo" class="btn btn-primary m-2">Modificar</button>
-			<button type="button" id="delInfo" class="btn btn-danger m-2">Eliminar</button>
-		</div>
-		</div>
+		<div class="modal-content">
+			<div>
+				<div class="m-2 w-100 text-content-center">
+					<h4 class="text-center" id="tituloModalInfo">Modificar o eliminar elemento</h4>
+				</div>
+				<div class="form-group m-1">
+					<label for="formGroupExampleInput" id="nombreNameInfo">Nombre</label>
+					<input type="text" class="form-control" id="nombreInfo">
+				</div>
+				<div class="form-group m-1">
+					<label for="formGroupExampleInput2" id="relevanciaNameInfo">Relevancia</label>
+					<input type="number" class="form-control" id="relevanciaInfo">
+				</div>
+				<div id="formularioResuelto" class="form-check">
+					<input class="form-check-input" type="checkbox" value="" id="resueltoInfo">
+					<label class="form-check-label">
+						Resuelto
+					</label>
+				</div>
+				<div class="btn-group w-100">
+					<button type="button" id="editInfo" class="btn btn-primary m-2">Modificar</button>
+					<button type="button" id="delInfo" class="btn btn-danger m-2">Eliminar</button>
+				</div>
+			</div>
 
 		</div>
 	</div>
