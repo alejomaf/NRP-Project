@@ -1,120 +1,186 @@
-function addRequisitoRelacion(nombre, relevancia, idRequisito, resuelto) {
+async function cargarBotones() {
+    for (var r in requisitos) {
+        addBoton($("#requisitosRelaciones1"), requisitos[r]);
+    }
+    $("#requisitosRelaciones2").hide();
+    cargarRelaciones();
+}
+async function addBoton(lugar, requisito) {
+    var option = document.createElement("option");
+    option.setAttribute("value", requisito.idRequisito);
+    option.innerHTML = requisito.nombre;
 
-	var long = requisitos[requisitos.length - 1];
-	var etiqueta = "R" + (requisitos.length == 0 ? 0 : parseInt(idRequisito));
-
-
-	//añade la columna en la penultima
-	var nombreRequisito = document.createElement("th");
-
-	nombreRequisito.setAttribute("scope", "col");
-	nombreRequisito.innerHTML = etiqueta;
-
-	var prioridadAux = $("#nombreColumnasRelaciones .prioridadClienteRelacion");
-	$("#nombreColumnasRelaciones .prioridadClienteRelacion").remove();
-	$("#nombreColumnasRelaciones").append(nombreRequisito);
-	$("#nombreColumnasRelaciones").append(prioridadAux);
-	/////////////////////////////////////////////////////////////
-
-	//añade el esfuerzo del requisito al final de la columna
-	var esfuerzoReq = document.createElement("td");
-
-	if ($.isNumeric(relevancia)) {
-		esfuerzoReq.innerHTML = relevancia;
-	} else {
-		esfuerzoReq.innerHTML = 0;
-	}
-
-	var prioridadTotalRelacion = $("#prioridadTotalRelacion");
-	$("#prioridadTotalRelacion").remove();
-
-	$("#esfuerzoRequisitoRelacion").append(esfuerzoReq);
-	$("#esfuerzoRequisitoRelacion").append(prioridadTotalRelacion);
-	//////////////////////////////////////////////////////////////
-
-	//añade los inputs por cada cliente
-	//if (!cargando)
-	for (j = 0; j < clientes.length; j++) {
-		var rec1 = document.createElement("td");
-
-		var requisito1 = document.createElement("input");
-		requisito1.setAttribute("id", "sinGuardar");
-		requisito1.setAttribute("type", "text");
-		requisito1.setAttribute("class", "form-control");
-		requisito1.value = "0";
-
-		rec1.append(requisito1);
-
-		$("#" + clientes[j].idCliente + " .relevancia").remove();
-
-		var relevanciaCliente = document.createElement("td");
-		relevanciaCliente.setAttribute("class", "relevancia");
-		relevanciaCliente.innerHTML = clientes[j].relevancia;
-
-		$("#" + clientes[j].idCliente).append(rec1);
-		$("#" + clientes[j].idCliente).append(relevanciaCliente);
-	}
-	//////////////////////////////////////////////////////////////
-
-	//añade la leyenda de requisitos totales
-	var requi = document.createElement("tr");
-	var identifier = document.createElement("td");
-	var nomReq = document.createElement("td");
-
-	identifier.innerHTML = etiqueta;
-	requi.append(identifier);
-
-	nomReq.innerHTML = nombre;
-	requi.append(nomReq);
-
-	$("#tablaReq").append(requi);
-	//////////////////////////////////////////////////////////////
-	hideModal();
+    lugar.append(option);
 }
 
-function addClienteRelacion(nombre, relevancia, idCliente) {
+async function seleccionarRequisito() {
+    var idReqSel = $("#requisitosRelaciones1").children("option:selected").val();
+    $("#requisitosRelaciones2").html("");
+    addBoton($("#requisitosRelaciones2"), { idRequisito: -1, nombre: "Selecciona el requisito" });
 
-	var fila = document.createElement("tr");
-	fila.setAttribute("id", idCliente);
+    if (idReqSel == -1) {
+        $("#requisitosRelaciones2").hide();
+        return;
+    }
+    $("#requisitosRelaciones2").show();
+    for (var r in requisitos) {
+        if (await tieneRelacion(requisitos[r])) {
+            if (requisitos[r].idRequisito != idReqSel)
+                addBoton($("#requisitosRelaciones2"), requisitos[r]);
+        }
+    }
+}
 
-	var nombreCliente = document.createElement("th");
-	nombreCliente.setAttribute("style", "cursor:pointer");
-	nombreCliente.setAttribute("onclick", "verInformacion(0,'" + nombre + "'," + relevancia + ", " + idCliente + ",null)");
-	//ANADIR ONCLICK
+async function tieneRelacion(requisito) {
+    for (var r in relaciones) {
+        if (relaciones[r].Requisito_idRequisito == requisito.idRequisito || relaciones[r].Requisito_idRequisito1 == requisito.idRequisito) return false;
+    }
+    return true;
+}
 
-	nombreCliente.setAttribute("scope", "row");
-	nombreCliente.innerHTML = nombre;
+async function cargarRelaciones() {
+    for (var r in relaciones) {
+        var image = document.createElement("img");
+        var relacion = await relaciones[r].relacion;
+        switch (relacion) {
+            case "0":
+                image.setAttribute("src", "images/arrowRight.png");
+                break;
+            case "1":
+                image.setAttribute("src", "images/doubleArrow.png");
+                break;
+            case "2":
+                image.setAttribute("src", "images/arrowRightN.png");
+                break;
+        }
+        var tr = document.createElement("tr");
+        tr.setAttribute("style", "cursor:pointer");
+        tr.setAttribute("onclick", "modalModificarRelacion(" + relaciones[r].idRelacion + ")")
+        var td = document.createElement("td");
+        td.setAttribute("class", "align-middle");
+        td.innerHTML = await cogerRequisito(relaciones[r].Requisito_idRequisito);
 
-	fila.append(nombreCliente);
+        var td2 = document.createElement("td");
+        td2.setAttribute("class", "align-middle");
 
-	if (requisitos.length != 0) {
-		for (k = 0; k < requisitos.length; k++) {
-			var rec1 = document.createElement("td");
-			var requisito1 = document.createElement("input");
-			console.log($("#filaClientesRelaciones").size);
-			requisito1.setAttribute("id", valoraciones[0][k].idValoracion);
-			requisito1.setAttribute("type", "text");
-			requisito1.setAttribute("class", "form-control");
-			requisito1.value = valoraciones[$("#filaClientesRelaciones tr").length][k].valoracion;
+        td2.append(image);
 
-			rec1.append(requisito1);
-			fila.append(rec1);
-		}
-	}
+        var td3 = await document.createElement("td");
+        td3.setAttribute("class", "align-middle");
+        td3.innerHTML = await cogerRequisito(relaciones[r].Requisito_idRequisito1);
 
-	var relevanciaCliente = document.createElement("td");
-	relevanciaCliente.setAttribute("class", "relevancia");
+        tr.append(td);
+        tr.append(td2);
+        tr.append(td3);
 
-	if ($.isNumeric(relevancia)) {
-		relevanciaCliente.innerHTML = relevancia;
-	} else {
-		relevancia = "1"
-		relevanciaCliente.innerHTML = 1;
-	}
+        $("#tablaRelaciones").append(tr);
+    }
+}
 
-	fila.append(relevanciaCliente);
+async function modalModificarRelacion(idRelacion) {
+    $('#relationModal').modal('show');
+    relacion = await cogerRelacion(idRelacion);
+    $("#tipoRelacionesModificar").val(relacion.relacion);
+    $("#modificarRelacion").attr("onclick", "modificarRelacion(" + idRelacion + "," + relacion.relacion + ")")
+    $("#eliminarRelacion").attr("onclick", "eliminarRelacion(" + idRelacion + ")");
+}
 
-	$("#filaClientesRelaciones").append(fila);
-	hideModal();
+async function cogerRequisito(idRequisito) {
+    for (var req in requisitos) {
+        if (requisitos[req].idRequisito == idRequisito) {
+            var texto = requisitos[req].nombre
+            return texto;
+        }
+    }
+    return "";
+}
+async function cogerRelacion(idRelacion) {
+    for (var rel in relaciones) {
+        if (relaciones[rel].idRelacion == idRelacion) {
+            return relaciones[rel];
+        }
+    }
+    return null;
+}
 
+
+async function crearRelacion() {
+    var Requisito_idRequisito = $("#requisitosRelaciones1").children("option:selected").val();
+    var Requisito_idRequisito1 = $("#requisitosRelaciones2").children("option:selected").val();
+    var relacion = $("#tipoRelaciones").children("option:selected").val();
+
+    if (Requisito_idRequisito == -1 || Requisito_idRequisito1 == -1 || relacion == -1) return;
+
+    relacionAux = { Requisito_idRequisito: Requisito_idRequisito, Requisito_idRequisito1: Requisito_idRequisito1, relacion: relacion, Proyecto_idProyecto: idProyecto };
+    await anadirDato("Relacion", relacionAux);
+    location.reload();
+}
+async function modificarRelacion(idRelacion, relacion) {
+    relacionSel = $("#tipoRelacionesModificar").val();
+    if (relacionSel == relacion) return;
+    relacionAux = { idRelacion: idRelacion, relacion: relacionSel };
+    await actualizarDato("Relacion", relacionAux);
+    location.reload();
+}
+async function eliminarRelacion(idRelacion) {
+    relacionAux = { idRelacion: idRelacion };
+    await eliminarDato("Relacion", relacionAux);
+    location.reload();
+}
+
+async function accionARealizar(idRequisito, idRequisito1) {
+    for (var r in relaciones) {
+        if (relaciones[r].idRequisito == idRequisito && relaciones[r].idRequisito1 == idRequisito1) {
+            return relaciones[r].idRelacion;
+        }
+    }
+    return -1;
+}
+
+async function gestionRelacion(tipoRelacion, tipo, requisito, requisito2) {
+    var requisito = requisitos[requisito];
+    var requisito2 = requisitos[requisito2];
+
+    if (tipoRelacion != -1) var relacion = relaciones[tipoRelacion];
+
+    if (tipoRelacion == -1) {
+        if (tipo == 1) {
+            await crearRelacion(requisito, requisito2, tipo);
+        } else if (tipo == -1) return;
+        else {
+            await crearRelacion(requisito, requisito2, tipo);
+        }
+    } else if (tipoRelacion == 1) {
+        if (tipo == -1) {
+            await eliminarRelacion(relacion.idRelacion);
+            await eliminarRelacion(buscarPar(relacion).idRelacion);
+        } else if (tipo == 1) {
+            return;
+        } else {
+            await modificarRelacion(relacion.idRelacion, tipo);
+        }
+    } else {
+        if (tipo == -1) {
+            await eliminarRelacion(relacion.idRelacion);
+        } else {
+            await modificarRelacion(relacion.idRelacion, tipo);
+        }
+    }
+    location.reload();
+}
+
+async function buscarPar(relacion) {
+    for (var r in relaciones) {
+        if (relaciones[r].Requisito_idRequisito == relacion.Requisito_idRequisito1 && relaciones[r].Requisito_idRequisito1 == relacion.Requisito_idRequisito) return relaciones[r];
+    }
+    return null;
+}
+
+async function inicializarRelaciones() {
+    for (var r in requisitos) {
+        await addRequisitoRelacion(requisitos[r].nombre, requisitos[r].esfuerzo, requisitos[r].idRequisito);
+    }
+    for (var r in requisitos) {
+        await addClienteRelacion(requisitos[r].esfuerzo, requisitos[r].idRequisito, r);
+    }
 }

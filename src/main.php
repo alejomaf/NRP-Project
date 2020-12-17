@@ -6,6 +6,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script src="main.js"></script>
+	<script src="js/relaciones.js"></script>
 	<script src="database.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -132,28 +133,66 @@
 			</div>
 			<br>
 
-			<table class="table table-sm" id="tablaRelaciones">
-				<thead>
-					<tr id="nombreColumnasRelaciones">
-						<th scope="col">Clientes\Relaciones</th>
-						<th scope="col" class="prioridadClienteRelacion">Wi</th>
-					</tr>
-				</thead>
-				<tbody id="filaClientesRelaciones">
-					<tr id="esfuerzoRequisitoRelacion">
-						<!--Siempre el mismo valor-->
-						<th scope="row">Ef</th>
-						<td id="prioridadTotalRelacion">X</td>
+			<table class="table table-sm">
+				<tbody>
+					<tr>
+						<td><select id="requisitosRelaciones1" class="custom-select" onchange="seleccionarRequisito();">
+								<option value=-1>Selecciona un requisito</option>
+							</select></td>
+						<td><select id="requisitosRelaciones2" class="custom-select">
+								<option value=-1>Selecciona el requisito</option>
+							</select></td>
+						<td><select id="tipoRelaciones" class="custom-select">
+								<option value=-1>Selecciona la relación</option>
+								<option value=0>Implicación</option>
+								<option value=1>Combinación</option>
+								<option value=2>Exclusión</option>
+							</select></td>
 					</tr>
 				</tbody>
 			</table>
-					
+			<button type="button" class="btn btn-primary btn-block" onclick="crearRelacion()">Crear relación</button>
+			<!--TABLA DE RELACIONES CREADAS-->
+			<br>
+			<div class="d-flex justify-content-center">
+				<h4 class="font-weight-bold"> Relaciones creadas </h4>
+			</div>
+			<br>
+
+			<table class="table table-sm">
+				<tbody id="tablaRelaciones">
+				</tbody>
+			</table>
+
 		</div>
 	</div>
 
 	<br>
 
 
+	<div id="relationModal" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div>
+					<div class="m-2 w-100 text-content-center">
+						<h4 class="text-center">Modificar o eliminar relación</h4>
+					</div>
+					<div class="form-group m-1">
+						<select id="tipoRelacionesModificar" class="custom-select">
+							<option value=0>Implicación</option>
+							<option value=1>Combinación</option>
+							<option value=2>Exclusión</option>
+						</select></td>
+					</div>
+					<div class="btn-group w-100">
+						<button type="button" id="modificarRelacion" class="btn btn-primary m-2">Modificar relación</button>
+						<button type="button" class="btn btn-danger m-2" id="eliminarRelacion">Eliminar</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 	<div id="ventanaFlotante" class="modal" tabindex="-1" role="dialog">
 		<div class="modal-dialog" role="document">

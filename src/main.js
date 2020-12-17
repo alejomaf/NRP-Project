@@ -13,7 +13,7 @@ async function realizarConsulta(ubicacion, consulta) {
 function addCliente(nombre, relevancia, idCliente) {
 
 	var fila = document.createElement("tr");
-	fila.setAttribute("id", idCliente);
+	fila.setAttribute("id", "fila_" + idCliente);
 
 	var nombreCliente = document.createElement("th");
 	nombreCliente.setAttribute("style", "cursor:pointer");
@@ -29,7 +29,6 @@ function addCliente(nombre, relevancia, idCliente) {
 		for (k = 0; k < requisitos.length; k++) {
 			var rec1 = document.createElement("td");
 			var requisito1 = document.createElement("input");
-			console.log($("#filaClientes").size);
 			requisito1.setAttribute("id", valoraciones[0][k].idValoracion);
 			requisito1.setAttribute("type", "text");
 			requisito1.setAttribute("class", "form-control");
@@ -120,25 +119,25 @@ function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 	//añade los inputs por cada cliente
 	//if (!cargando)
 	for (j = 0; j < clientes.length; j++) {
-		var rec1 = document.createElement("td");
+        var rec1 = document.createElement("td");
 
-		var requisito1 = document.createElement("input");
-		requisito1.setAttribute("id", "sinGuardar");
-		requisito1.setAttribute("type", "text");
-		requisito1.setAttribute("class", "form-control");
-		requisito1.value = "0";
+        var requisito1 = document.createElement("input");
+        requisito1.setAttribute("id", "sinGuardar");
+        requisito1.setAttribute("type", "text");
+        requisito1.setAttribute("class", "form-control");
+        requisito1.value = "0";
 
-		rec1.append(requisito1);
+        rec1.append(requisito1);
 
-		$("#" + clientes[j].idCliente + " .relevancia").remove();
+        $("#fila" + clientes[j].idCliente + " .relevancia").remove();
 
-		var relevanciaCliente = document.createElement("td");
-		relevanciaCliente.setAttribute("class", "relevancia");
-		relevanciaCliente.innerHTML = clientes[j].relevancia;
+        var relevanciaCliente = document.createElement("td");
+        relevanciaCliente.setAttribute("class", "relevancia");
+        relevanciaCliente.innerHTML = clientes[j].relevancia;
 
-		$("#" + clientes[j].idCliente).append(rec1);
-		$("#" + clientes[j].idCliente).append(relevanciaCliente);
-	}
+        $("#fila" + clientes[j].idCliente).append(rec1);
+        $("#fila_" + clientes[j].idCliente).append(relevanciaCliente);
+    }
 	//////////////////////////////////////////////////////////////
 
 	//añade la leyenda de requisitos totales
@@ -447,6 +446,7 @@ async function cargarDatos() {
 		}
 	}
 
+	cargarBotones();
 }
 
 function asignarValorRequisitosCliente(cliente, valores) {
@@ -482,13 +482,11 @@ async function crearRequisito() {
 
 async function guardarValoracion() {
 
-	//console.log("uno")
 	for (o = 0; o < clientes.length; o++) {
 		k = 0;
-		$("#" + clientes[o].idCliente + " :input").each(function () {
+		$("#fila_" + clientes[o].idCliente + " :input").each(function () {
 			valoraciones[o][k].valoracion = $(this).val();
 			actualizarDato("Valoracion", valoraciones[o][k]);
-			console.log(valoraciones[o][k].valoracion);
 			k++;
 		});
 	}
