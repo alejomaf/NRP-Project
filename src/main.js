@@ -129,7 +129,7 @@ async function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 		input.setAttribute("id", valoraciones[j][requisitos.length - 1].idValoracion);
 		input.setAttribute("type", "text");
 		input.setAttribute("class", "form-control");
-		//input.value = "0";
+		input.value = "0";
 
 		rec1.append(input);
 
@@ -540,7 +540,7 @@ async function eliminarOModificar(eliminar, tipo, id) {
 	if (tipo == 1) {
 		//$("#resueltoInfo").is(':checked')
 		if (eliminar) await eliminarDato("Requisito", {
-			idRequisito: idRequisito
+			idRequisito: id
 		});
 		else if (nombre == "" || relevancia == "") return;
 		else {
