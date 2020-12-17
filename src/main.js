@@ -26,7 +26,7 @@ async function addCliente(nombre, relevancia, idCliente) {
 	fila.append(nombreCliente);
 
 	await cargarValores();
-	
+
 	if (requisitos.length != 0) {
 		for (k = 0; k < requisitos.length; k++) {
 			var rec1 = document.createElement("td");
@@ -189,7 +189,6 @@ async function anadirRequisito(nombre, esfuerzo) {
 			Requisito_idRequisito: requisito.idRequisito,
 			valoracion: 0
 		};
-		console.log("creado");
 		await anadirDato("Valoracion", valoracion);
 	}
 }
@@ -232,7 +231,6 @@ function cogerValorClienteRequisitos(requisito) {
 
 	for (l = 0; l < clientes.length; l++) {
 		valores.push(cogerValorRequisitosCliente(clientes[l])[posicion]);
-	console.log(valores);
 	}
 
 	return valores;
@@ -282,7 +280,7 @@ function showModal(clirec) {
 			$("#añadirModal").text("Crear");
 			$("#añadirModal").attr("onclick", "crearProyecto()");
 			break;
-		case 3: //guardar datos
+		case 3: //guardar valoraciones
 			$("#nombreAddModal").hide();
 			$("#primerCampo").hide();
 			$("#segundoCampo").hide();
@@ -291,6 +289,16 @@ function showModal(clirec) {
 			$("#tituloModal").text("¿Seguro que deseas guardar?");
 			$("#añadirModal").text("Guardar");
 			$("#añadirModal").attr("onclick", "guardarValoracion()");
+			break;
+		case 4: //guardar requisitos solucionados
+			$("#nombreAddModal").hide();
+			$("#primerCampo").hide();
+			$("#segundoCampo").hide();
+			$("#relevanciaAddModal").hide();
+			$("#relevanciaAddModal").hide();
+			$("#tituloModal").text("¿Deseas marcarlos como finalizado?");
+			$("#añadirModal").text("Guardar");
+			$("#añadirModal").attr("onclick", "guardarRequisitos()");
 			break;
 	}
 
@@ -301,14 +309,19 @@ function hideModal() {
 	$("#ventanaFlotante").modal("hide");
 }
 
-async function calcularTodo() {
-
+function calcularSolucion(){
 	var requisitosFinales = [];
 
 	for (var i = 0; i < requisitos.length; i++) {
 		requisitosFinales.push(addReqConValor(requisitos[i]));
 	}
 	var sol = calcularRequisitos(requisitosFinales, parseInt(proyecto.limiteEsfuerzo));
+	return sol;
+}
+
+async function calcularTodo() {
+
+	var sol = calcularSolucion();
 
 	$("#satisfaccionTotal").text(sol.maxValue);
 
@@ -341,6 +354,8 @@ async function calcularTodo() {
 		}
 	}
 	$("#contribucion").text(maxContribuidor.nombre);
+	
+	$("#guardarSolucion").attr("hidden", false);
 }
 
 function contribucion(cliente, solucion) {
@@ -354,6 +369,7 @@ function contribucion(cliente, solucion) {
 
 function addReqConValor(requisito) {
 	var req = {
+		posicion: requisitos.lastIndexOf(requisito),
 		nombre: "R" + requisito.idRequisito,
 		esfuerzo: requisito.esfuerzo, //w o peso
 		satisfaccionDelRequisito: calcularSatisfaccionRequisito(requisito) //la suma del (requisito * pesoDelCliente) de todos los clientes
@@ -501,6 +517,17 @@ async function guardarValoracion() {
 		});
 	}
 	hideModal();
+}
+
+async function guardarRequisitos() {
+
+	var solucion = calcularSolucion();
+	for(r in solucion.subset){
+		requisitos[solucion.subset[r].posicion].resuelto = 1;
+		actualizarDato("Requisito", requisitos[solucion.subset[r].posicion]);
+	}
+	hideModal();
+	await location.reload()
 }
 
 async function anadirValoracion(idCli, idReq, val) {

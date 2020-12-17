@@ -5,6 +5,7 @@ var proyecto = null;
 var clientes = [];
 var relaciones = [];
 var requisitos = [];
+var requisitosResueltos = [];
 var valoraciones = [];
 
 async function cargarValores() {
@@ -32,9 +33,14 @@ async function cargarValores() {
 
 
 	requisitos = await realizarConsulta("api/busqueda/buscarRequisito.php", {
-		Proyecto_idProyecto: idProyecto
+		Proyecto_idProyecto: idProyecto, resuelto: 0
 	});
 	if (requisitos == null) requisitos = [];
+	
+	requisitosResueltos = await realizarConsulta("api/busqueda/buscarRequisito.php", {
+		Proyecto_idProyecto: idProyecto, resuelto: 1
+	});
+	if (requisitosResueltos == null) requisitosResueltos = [];
 
 
 	

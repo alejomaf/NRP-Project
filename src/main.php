@@ -104,6 +104,8 @@
 -->
 					</tbody>
 				</table>
+				
+				<input type="button" class="btn btn-block btn-primary" onclick="showModal(4)" value="Marcar requisitos optimos" id="guardarSolucion" hidden=true>
 			</div>
 
 			<br>
