@@ -14,6 +14,7 @@
 
 <script>
 	var idProyecto = <?php echo $_GET["idProyecto"]; ?>;
+
 </script>
 
 <body style="background-color:#fbedff">
@@ -21,23 +22,18 @@
 
 	<br>
 	<div class="d-flex justify-content-center">
-		<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-			<h2 class="font-weight-bold"> Problema de la siguiente versión </h2>
+		<div class="rounded-circle py-3 px-3" style="background-color: #fbedff" align="center">
+			<h3> Problema de la siguiente versión </h3>
+			<br>
+			<h1 class="font-weight-bold" id="nomProyecto"></h1>
+			<br>
+			<h5 id="limiteEsfuerzo"></h5>
 		</div>
 	</div>
 	<br>
 
 	<div class="d-flex justify-content-center">
 		<div class="col-md-8 mb-3">
-			<div class="form-group">
-				<label>Introduce el límite de esfuerzo</label>
-				<input type="text" class="form-control" id="limiteEsfuerzo" placeholder="Introduce el límite de esfuerzo">
-			</div>
-			<div class="form-group">
-				<label>Introduce el límite de satisfacción</label>
-				<input type="text" class="form-control" id="limiteSatisfaccion" placeholder="WIP debido a optimizaciones">
-			</div>
-
 			<div>
 				<div class="btn btn-group w-100">
 					<button type="button" class="btn btn-primary mx-2" onclick="showModal(0)">Añadir cliente

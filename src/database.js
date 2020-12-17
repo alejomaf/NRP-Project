@@ -1,4 +1,5 @@
 var idProyecto = null;
+var proyecto = null;
 //IDProyecto, DEFINIR!!!
 
 var clientes = [];
@@ -7,7 +8,14 @@ var requisitos = [];
 var valoraciones = [];
 
 async function cargarValores() {
+	
 	if (idProyecto == null) return;
+	
+	var proyectoAux = await realizarConsulta("api/busqueda/buscarProyecto.php", {
+		idProyecto: idProyecto
+	});
+	
+	proyecto = proyectoAux[0];
 
 	clientes = await realizarConsulta("api/busqueda/buscarCliente.php", {
 		Proyecto_idProyecto: idProyecto
@@ -31,13 +39,14 @@ async function cargarValores() {
 
 	
 		if (clientes.length != 0) {
+			valoraciones = [];
 			for (t = 0; t < clientes.length; t++) {
 				var valCli = [];
 				valCli = await realizarConsulta("api/busqueda/buscarValoracion.php", {
 					Cliente_idCliente: clientes[t].idCliente
 				});
+				
 				valoraciones.push(valCli);
-				//console.log(valoraciones);
 			}
 		}
 	
@@ -47,7 +56,6 @@ async function cargarValores() {
 	});
 	*/
 	if (valoraciones == null) valoraciones = [];
-	//console.log(valoraciones);
 }
 
 
@@ -66,6 +74,5 @@ async function actualizarDato(tabla, valor) {
 //anadirDato("relacion",{Requisito_idRequisito: requisito1, Requisito_idRequisito1: requisito2, relacion: relacionValor});
 async function anadirDato(tabla, valor) {
 	await realizarConsulta("api/creacion/crear" + tabla + ".php", valor);
-	console.log("lo añade");
 	cargarValores();
 }

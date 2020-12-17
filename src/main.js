@@ -26,11 +26,11 @@ async function addCliente(nombre, relevancia, idCliente) {
 	fila.append(nombreCliente);
 
 	await cargarValores();
+	
 	if (requisitos.length != 0) {
 		for (k = 0; k < requisitos.length; k++) {
 			var rec1 = document.createElement("td");
 			var input = document.createElement("input");
-			console.log(valoraciones[$("#filaClientes tr").length][1].valoracion);
 			input.setAttribute("id", valoraciones[$("#filaClientes tr").length][k].idValoracion);
 			input.setAttribute("type", "text");
 			input.setAttribute("class", "form-control");
@@ -72,6 +72,8 @@ async function anadirCliente(nombre, relevancia) {
 	cliente = clientes[clientes.length - 1];
 
 	for (r in requisitos) {
+
+		await cargarValores();
 		var valoracion = {
 			Cliente_idCliente: cliente.idCliente,
 			Requisito_idRequisito: requisitos[r].idRequisito,
@@ -122,7 +124,6 @@ async function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 	//añade los inputs por cada cliente
 	//if (!cargando)
 	for (j = 0; j < clientes.length; j++) {
-		console.log("fck");
 		var rec1 = document.createElement("td");
 
 		var input = document.createElement("input");
@@ -181,11 +182,14 @@ async function anadirRequisito(nombre, esfuerzo) {
 	requisito = requisitos[requisitos.length - 1];
 
 	for (c in clientes) {
+		await cargarValores();
+
 		var valoracion = {
 			Cliente_idCliente: clientes[c].idCliente,
 			Requisito_idRequisito: requisito.idRequisito,
 			valoracion: 0
 		};
+		console.log("creado");
 		await anadirDato("Valoracion", valoracion);
 	}
 }
@@ -210,7 +214,7 @@ function configurarFilaValores(valorRequisitos) {
 function cogerValorRequisitosCliente(cliente) {
 	var valores = []
 
-	$("#" + cliente.idCliente + " :input").each(function () {
+	$("#fila_" + cliente.idCliente + " :input").each(function () {
 		if ($(this).val().length == 0 || !$.isNumeric($(this).val())) {
 			valores.push("0")
 		} else {
@@ -228,6 +232,7 @@ function cogerValorClienteRequisitos(requisito) {
 
 	for (l = 0; l < clientes.length; l++) {
 		valores.push(cogerValorRequisitosCliente(clientes[l])[posicion]);
+	console.log(valores);
 	}
 
 	return valores;
@@ -296,14 +301,14 @@ function hideModal() {
 	$("#ventanaFlotante").modal("hide");
 }
 
-function calcularTodo() {
+async function calcularTodo() {
 
 	var requisitosFinales = [];
 
 	for (var i = 0; i < requisitos.length; i++) {
 		requisitosFinales.push(addReqConValor(requisitos[i]));
 	}
-	var sol = calcularRequisitos(requisitosFinales, parseInt($("#limiteEsfuerzo").val()));
+	var sol = calcularRequisitos(requisitosFinales, parseInt(proyecto.limiteEsfuerzo));
 
 	$("#satisfaccionTotal").text(sol.maxValue);
 
@@ -420,7 +425,6 @@ function calcularRequisitos(totalRequisitos, esfuerzoMaximo) {
 
 $(document).ready(function () {
 	cargarDatos();
-	$("#limiteEsfuerzo").val('');
 });
 
 function crearProyecto() {
@@ -438,6 +442,8 @@ function crearProyecto() {
 async function cargarDatos() {
 	await cargarValores();
 
+	$("#nomProyecto").text(proyecto.nombre);
+	$("#limiteEsfuerzo").text("Límite de esfuerzo: " + proyecto.limiteEsfuerzo);
 
 	if (requisitos.length != 0) {
 		for (var r in requisitos) {
@@ -480,7 +486,7 @@ async function crearRequisito() {
 	if (nombre == "" || relevancia == "") return;
 
 	await anadirRequisito(nombre, relevancia);
-	//await cargarValores();
+	await cargarValores();
 	addRequisito(nombre, relevancia, requisitos[requisitos.length - 1].idRequisito, requisitos[requisitos.length - 1].resuelto);
 }
 
@@ -507,7 +513,6 @@ async function anadirValoracion(idCli, idReq, val) {
 	};
 
 	await anadirDato("Valoracion", valoracion);
-	//console.log("añade");
 }
 
 async function verInformacion(tipo, nombre, relevancia, id, resuelto) {
