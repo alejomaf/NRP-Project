@@ -9,7 +9,7 @@ $modificacion="";
 
 $idProyecto=$_POST["idProyecto"];
 
-anadirAModificacionNumero("nombre","nombre");
+anadirAModificacionTexto("nombre","nombre");
 anadirAModificacionNumero("limiteEsfuerzo","limiteEsfuerzo");
 
 mostrarDatos("proyecto", "idProyecto", $idProyecto, $conn);

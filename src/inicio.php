@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<script src="main.js"></script>
+	<script src="js/proyectos.js"></script>
 	<script src="database.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -26,36 +26,18 @@
 		<div class="col-md-8 mb-3">
 
 			<div>
-				<button type="button" class="btn btn-block btn-primary my-4" onclick="showModal(2)">Crear proyecto
+				<button type="button" class="btn btn-block btn-primary my-4" onclick="mostrarCreacionProyecto()">Crear proyecto
 				</button>
 				<table class="table table-sm" id="tabla">
 					<h3>Tabla de proyectos</h3>
 					<br>
 					<thead>
-						<tr id="nombreColumnas">
+						<tr>
 							<th scope="col">Proyecto</th>
-							<th scope="col" class="prioridadCliente">Opciones</th>
+							<th scope="col">Opciones</th>
 						</tr>
 					</thead>
-					<tbody id="filaClientes">
-						<tr id="esfuerzoRequisito">
-							<th scope="row">NRProyect</th>
-							<td id="prioridadTotal"><button type="button" class="btn btn-primary mx-2" onclick="showModalProyecto(true)">Modificar
-								</button>
-
-								<button type="button" class="btn btn-primary mx-2" onclick="showModalProyecto(false)">Eliminar
-								</button>
-							</td>
-						</tr>
-						<tr id="esfuerzoRequisito">
-							<th scope="row">NoSaltarPorLaVentana</th>
-							<td id="prioridadTotal"><button type="button" class="btn btn-primary mx-2" onclick="showModalProyecto(true)">Modificar
-								</button>
-
-								<button type="button" class="btn btn-primary mx-2" onclick="showModalProyecto(false)">Eliminar
-								</button>
-							</td>
-						</tr>
+					<tbody id="filaProyectos">
 					</tbody>
 
 				</table>
@@ -82,8 +64,8 @@
 					<input type="number" class="form-control" id="relevanciaAddModal" placeholder="Límite esfuerzo">
 				</div>
 				<div class="btn-group w-100">
-					<button type="button" id="añadirModal" class="btn btn-primary m-2">Añadir</button>
-					<button type="button" class="btn btn-secondary m-2" onclick="hideModal()">Cancelar</button>
+					<button type="button" id="anadirModal" class="btn btn-primary m-2">Añadir</button>
+					<button type="button" class="btn btn-secondary m-2" onclick="$('#ventanaFlotante').modal('hide')">Cancelar</button>
 				</div>
 			</div>
 

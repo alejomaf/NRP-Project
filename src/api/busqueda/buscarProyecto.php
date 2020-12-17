@@ -9,7 +9,7 @@ $busqueda="";
 
 
 anadirAConsultaNumero("idProyecto","idProyecto");
-anadirAConsultaNumero("nombre","nombre");
+anadirAConsultaTexto("nombre","nombre");
 anadirAConsultaNumero("limiteEsfuerzo","limiteEsfuerzo");
 
 mostrarDatos("proyecto", $busqueda, $conn);
