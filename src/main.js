@@ -10,7 +10,7 @@ async function realizarConsulta(ubicacion, consulta) {
 }
 //ubicacion=(await realizarConsulta("apis/busqueda/buscarUbicacion.php",{idUbicacion: objeto.Ubicacion_idUbicacion}))[0];
 
-function addCliente(nombre, relevancia, idCliente) {
+async function addCliente(nombre, relevancia, idCliente) {
 
 	var fila = document.createElement("tr");
 	fila.setAttribute("id", "fila_" + idCliente);
@@ -25,16 +25,18 @@ function addCliente(nombre, relevancia, idCliente) {
 
 	fila.append(nombreCliente);
 
+	await cargarValores();
 	if (requisitos.length != 0) {
 		for (k = 0; k < requisitos.length; k++) {
 			var rec1 = document.createElement("td");
-			var requisito1 = document.createElement("input");
-			requisito1.setAttribute("id", valoraciones[0][k].idValoracion);
-			requisito1.setAttribute("type", "text");
-			requisito1.setAttribute("class", "form-control");
-			requisito1.value = valoraciones[$("#filaClientes tr").length][k].valoracion;
+			var input = document.createElement("input");
+			console.log(valoraciones[$("#filaClientes tr").length][1].valoracion);
+			input.setAttribute("id", valoraciones[$("#filaClientes tr").length][k].idValoracion);
+			input.setAttribute("type", "text");
+			input.setAttribute("class", "form-control");
+			input.value = valoraciones[$("#filaClientes tr").length][k].valoracion;
 
-			rec1.append(requisito1);
+			rec1.append(input);
 			fila.append(rec1);
 		}
 	}
@@ -79,7 +81,7 @@ async function anadirCliente(nombre, relevancia) {
 	}
 }
 
-function addRequisito(nombre, relevancia, idRequisito, resuelto) {
+async function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 
 	var long = requisitos[requisitos.length - 1];
 	var etiqueta = "R" + (requisitos.length == 0 ? 0 : parseInt(idRequisito));
@@ -89,7 +91,7 @@ function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 	var nombreRequisito = document.createElement("th");
 	nombreRequisito.setAttribute("style", "cursor:pointer");
 	nombreRequisito.setAttribute("onclick", "verInformacion(1,'" + nombre + "'," + relevancia + ", " + idRequisito + "," + resuelto + ")");
-	
+
 	nombreRequisito.setAttribute("scope", "col");
 	nombreRequisito.innerHTML = etiqueta;
 
@@ -116,28 +118,30 @@ function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 	$("#esfuerzoRequisito").append(prioridadTotal);
 	//////////////////////////////////////////////////////////////
 
+	await cargarValores();
 	//añade los inputs por cada cliente
 	//if (!cargando)
 	for (j = 0; j < clientes.length; j++) {
-        var rec1 = document.createElement("td");
+		console.log("fck");
+		var rec1 = document.createElement("td");
 
-        var requisito1 = document.createElement("input");
-        requisito1.setAttribute("id", "sinGuardar");
-        requisito1.setAttribute("type", "text");
-        requisito1.setAttribute("class", "form-control");
-        requisito1.value = "0";
+		var input = document.createElement("input");
+		input.setAttribute("id", valoraciones[j][requisitos.length - 1].idValoracion);
+		input.setAttribute("type", "text");
+		input.setAttribute("class", "form-control");
+		//input.value = "0";
 
-        rec1.append(requisito1);
+		rec1.append(input);
 
-        $("#fila" + clientes[j].idCliente + " .relevancia").remove();
+		$("#fila_" + clientes[j].idCliente + " .relevancia").remove();
 
-        var relevanciaCliente = document.createElement("td");
-        relevanciaCliente.setAttribute("class", "relevancia");
-        relevanciaCliente.innerHTML = clientes[j].relevancia;
+		var relevanciaCliente = document.createElement("td");
+		relevanciaCliente.setAttribute("class", "relevancia");
+		relevanciaCliente.innerHTML = clientes[j].relevancia;
 
-        $("#fila" + clientes[j].idCliente).append(rec1);
-        $("#fila_" + clientes[j].idCliente).append(relevanciaCliente);
-    }
+		$("#fila_" + clientes[j].idCliente).append(rec1);
+		$("#fila_" + clientes[j].idCliente).append(relevanciaCliente);
+	}
 	//////////////////////////////////////////////////////////////
 
 	//añade la leyenda de requisitos totales
@@ -465,7 +469,7 @@ async function crearCliente() {
 
 
 	await anadirCliente(nombre, relevancia);
-	//await cargarValores();
+	await cargarValores();
 	addCliente(nombre, relevancia, clientes[clientes.length - 1].idCliente);
 }
 
@@ -520,32 +524,46 @@ async function verInformacion(tipo, nombre, relevancia, id, resuelto) {
 		if (resuelto == 0) $("#resueltoInfo").prop('checked', false);
 		else $("#resueltoInfo").prop('checked', true);
 	}
-	$("#editInfo").attr("onclick", "eliminarOModificar(false," + tipo + "," + id+")");
-	$("#delInfo").attr("onclick", "eliminarOModificar(true," + tipo + "," + id+")");
+	$("#editInfo").attr("onclick", "eliminarOModificar(false," + tipo + "," + id + ")");
+	$("#delInfo").attr("onclick", "eliminarOModificar(true," + tipo + "," + id + ")");
 
 	$("#informacionObjeto").modal("show");
 }
 
 
 async function eliminarOModificar(eliminar, tipo, id) {
-	if ($('#resueltoInfo').is(':checked')) var resuelto = 1; else var resuelto = 0;
+	if ($('#resueltoInfo').is(':checked')) var resuelto = 1;
+	else var resuelto = 0;
 	var nombre = $("#nombreInfo").val();
 	var relevancia = $("#relevanciaInfo").val();
 
 	if (tipo == 1) {
 		//$("#resueltoInfo").is(':checked')
-		if (eliminar) await eliminarDato("Requisito", { idRequisito: idRequisito });
+		if (eliminar) await eliminarDato("Requisito", {
+			idRequisito: idRequisito
+		});
 		else if (nombre == "" || relevancia == "") return;
 		else {
-			await actualizarDato("Requisito", { idRequisito: id, nombre: nombre, esfuerzo: relevancia, resuelto: resuelto });
+			await actualizarDato("Requisito", {
+				idRequisito: id,
+				nombre: nombre,
+				esfuerzo: relevancia,
+				resuelto: resuelto
+			});
 		}
 	} else {
 		if ($("#resueltoInfo").is(':checked')) var resuelto = 1;
 		else var resuelto = 0;
-		if (eliminar) await eliminarDato("Cliente", { idCliente: id });
+		if (eliminar) await eliminarDato("Cliente", {
+			idCliente: id
+		});
 		else if (nombre == "" || relevancia == "") return;
 		else {
-			await actualizarDato("Cliente", { idCliente: id, nombre: nombre, relevancia: relevancia });
+			await actualizarDato("Cliente", {
+				idCliente: id,
+				nombre: nombre,
+				relevancia: relevancia
+			});
 		}
 	}
 
