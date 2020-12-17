@@ -96,11 +96,31 @@ async function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 
 	nombreRequisito.setAttribute("scope", "col");
 	nombreRequisito.innerHTML = etiqueta;
+	nombreRequisito.style.float = "left";
+	nombreRequisito.style.position = "relative";
+	nombreRequisito.style.top = "50%";
+
+	var check = document.createElement("input");
+	check.setAttribute("id", "check_" + idRequisito);
+	check.setAttribute("type", "checkbox");
+	check.style.float = "left";
+	check.style.position = "relative";
+	check.style.top = "50%";
 
 
+	var cabeza = document.createElement("div");
+	cabeza.append(nombreRequisito);
+	cabeza.append(check);
+
+
+	var cabeza2 = document.createElement("th");
+	cabeza2.append(cabeza);
+
+
+	cabeza2.style.textAlign = "center"
 	var prioridadAux = $("#nombreColumnas .prioridadCliente");
 	$("#nombreColumnas .prioridadCliente").remove();
-	$("#nombreColumnas").append(nombreRequisito);
+	$("#nombreColumnas").append(cabeza2);
 	$("#nombreColumnas").append(prioridadAux);
 	/////////////////////////////////////////////////////////////
 
@@ -309,19 +329,31 @@ function hideModal() {
 	$("#ventanaFlotante").modal("hide");
 }
 
-function calcularSolucion(){
+function calcularSolucion() {
 	var requisitosFinales = [];
 
+	var esfuerzoSeleccionado = 0;
+	var forzados = [];
 	for (var i = 0; i < requisitos.length; i++) {
-		requisitosFinales.push(addReqConValor(requisitos[i]));
+		if (!$("#check_" + requisitos[i].idRequisito)[0].checked) {
+			requisitosFinales.push(addReqConValor(requisitos[i]));
+		} else {
+			forzados.push(addReqConValor(requisitos[i]))
+			esfuerzoSeleccionado += parseInt(requisitos[i].esfuerzo);
+		}
 	}
-	var sol = calcularRequisitos(requisitosFinales, parseInt(proyecto.limiteEsfuerzo));
-	return sol;
+	if (esfuerzoSeleccionado > parseInt(proyecto.limiteEsfuerzo)) {
+		console.log("se te fue " + esfuerzoSeleccionado);
+		return [];
+	}
+	var sol = calcularRequisitos(requisitosFinales, parseInt(proyecto.limiteEsfuerzo) - esfuerzoSeleccionado);
+	return [sol, forzados];
 }
 
 async function calcularTodo() {
 
-	var sol = calcularSolucion();
+	var sol = calcularSolucion()[0];
+	var forz = calcularSolucion()[1];
 
 	$("#satisfaccionTotal").text(sol.maxValue);
 
@@ -334,6 +366,17 @@ async function calcularTodo() {
 	$("#esfuerzoDesarrollo").text(esfuerzoFinal);
 
 	var requisitosOptimos = "";
+
+	for (var i = 0; i < forz.length; i++) {
+		requisitosOptimos += forz[i].nombre;
+		if (i < forz.length - 1) {
+			requisitosOptimos += ", ";
+		}
+	}
+
+	if (requisitosOptimos != "" && sol.subset.length != 0)
+		requisitosOptimos += ", ";
+	
 	for (var i = 0; i < sol.subset.length; i++) {
 		requisitosOptimos += sol.subset[i].nombre;
 		if (i < sol.subset.length - 1) {
@@ -354,7 +397,7 @@ async function calcularTodo() {
 		}
 	}
 	$("#contribucion").text(maxContribuidor.nombre);
-	
+
 	$("#guardarSolucion").attr("hidden", false);
 }
 
@@ -522,7 +565,7 @@ async function guardarValoracion() {
 async function guardarRequisitos() {
 
 	var solucion = calcularSolucion();
-	for(r in solucion.subset){
+	for (r in solucion.subset) {
 		requisitos[solucion.subset[r].posicion].resuelto = 1;
 		actualizarDato("Requisito", requisitos[solucion.subset[r].posicion]);
 	}
