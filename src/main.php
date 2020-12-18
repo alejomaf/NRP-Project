@@ -8,9 +8,72 @@
 	<script src="main.js"></script>
 	<script src="js/relaciones.js"></script>
 	<script src="database.js"></script>
+	<script src="pestanas.js"></script>
 	<script src="js/metricas.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<style>
+		/* Set height of body and the document to 100% to enable "full page tabs" */
+		body,
+		html {
+			height: 100%;
+			margin: 0;
+			font-family: Arial;
+		}
+
+		/* Style tab links */
+		.tablink {
+			background-color: #BBB;
+			color: black;
+			float: left;
+			border: none;
+			outline: none;
+			cursor: pointer;
+			padding: 14px 16px;
+			font-size: 17px;
+			width: 20%;
+		}
+
+		.tablink:hover {
+			background-color: #777;
+		}
+
+		/* Style the tab content (and add height:100% for full page content) */
+		.tabcontent {
+			color: black;
+			display: none;
+			padding: 100px 20px;
+			height: 100%;
+		}
+
+		/* Style the tab buttons */
+		.tablink2 {
+			background-color: #555;
+			color: white;
+			float: left;
+			border: none;
+			outline: none;
+			cursor: pointer;
+			padding: 14px 16px;
+			font-size: 17px;
+			width: 33%;
+		}
+
+		/* Change background color of buttons on hover */
+		.tablink2:hover {
+			background-color: #777;
+		}
+
+		/* Set default styles for tab content */
+		.tabcontent2 {
+			color: white;
+			display: none;
+			padding: 50px;
+			text-align: center;
+		}
+
+	</style>
 </head>
 
 <script>
@@ -21,120 +84,136 @@
 <body style="background-color:#fbedff">
 
 
-	<br>
 	<div class="d-flex justify-content-center">
 		<div class="rounded-circle py-3 px-3" style="background-color: #fbedff" align="center">
 			<h3> Problema de la siguiente versión </h3>
-			<br>
 			<h1 class="font-weight-bold" id="nomProyecto"></h1>
-			<br>
 			<h5 id="limiteEsfuerzo"></h5>
 		</div>
 	</div>
-	<br>
 
-	<div class="d-flex justify-content-center">
-		<div class="col-md-8 mb-3">
-			<div>
-				<div class="btn btn-group w-100">
-					<button type="button" class="btn btn-primary mx-2" onclick="showModal(0)">Añadir cliente
-					</button>
+	<button class="tablink" onclick="openPage('Calculo', this, 'FFF9AA')" id="defaultOpen">Calculo</button>
+	<button class="tablink" onclick="openPage('Resultado', this, 'FFBFBF')">Resultado</button>
+	<button class="tablink" onclick="openPage('Requisitos', this, 'BFD1EA')">Requisitos</button>
+	<button class="tablink" onclick="openPage('Metricas', this, 'CCC8EE')">Metricas</button>
+	<button class="tablink" onclick="openPage('Relaciones', this, 'BFEDBF')">Relaciones</button>
 
-					<button type="button" class="btn btn-primary mx-2" onclick="showModal(1)">Añadir requisito
-					</button>
 
-					<button type="submit" class="btn btn-primary mx-2" onclick="showModal(3)">Guardar
-					</button>
+	<div id="Calculo" class="tabcontent">
+		<div class="d-flex justify-content-center">
+			<div class="col-md-8 mb-3">
+				<div>
+					<div class="btn btn-group w-100">
+						<button type="button" class="btn btn-primary mx-2" onclick="showModal(0)">Añadir cliente
+						</button>
+
+						<button type="button" class="btn btn-primary mx-2" onclick="showModal(1)">Añadir requisito
+						</button>
+
+						<button type="submit" class="btn btn-primary mx-2" onclick="showModal(3)">Guardar
+						</button>
+					</div>
+					<br><br>
+					<table class="table table-sm" id="tabla">
+						<h3>Tabla de valores</h3><br>
+						<thead>
+							<tr id="nombreColumnas">
+								<th scope="col">Clientes</th>
+								<th scope="col" class="prioridadCliente">Wi</th>
+							</tr>
+						</thead>
+						<tbody id="filaClientes">
+							<!--Siempre última fila-->
+						</tbody>
+						<tr id="esfuerzoRequisito">
+							<!--Siempre el mismo valor-->
+							<th scope="row">Ef</th>
+							<td id="prioridadTotal">X</td>
+						</tr>
+					</table>
+
 				</div>
-				<br><br>
-				<table class="table table-sm" id="tabla">
-					<h3>Tabla de valores</h3><br>
-					<thead>
-						<tr id="nombreColumnas">
-							<th scope="col">Clientes</th>
-							<th scope="col" class="prioridadCliente">Wi</th>
-						</tr>
-					</thead>
-					<tbody id="filaClientes">
-						<!--Siempre última fila-->
-					</tbody>
-					<tr id="esfuerzoRequisito">
-						<!--Siempre el mismo valor-->
-						<th scope="row">Ef</th>
-						<td id="prioridadTotal">X</td>
-					</tr>
-				</table>
 
+				<br>
+				<input type="button" class="btn btn-block btn-primary" onclick="calcularTodo()" value="Calcular requisitos óptimos">
+				<br>
 			</div>
-
-			<br>
-			<input type="button" class="btn btn-block btn-primary" onclick="calcularTodo()" value="Calcular requisitos óptimos">
-			<br>
-			<div class="d-flex justify-content-center">
-				<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-					<h2 class="font-weight-bold"> Resultados </h2>
-				</div>
+		</div>
+	</div>
+	<div id="Resultado" class="tabcontent">
+		<div class="d-flex justify-content-center">
+			<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
+				<h2 class="font-weight-bold"> Resultados </h2>
 			</div>
-			<br>
+		</div>
+		<br>
 
-			<div>
-				<table class="table table-sm">
-					<tbody>
-						<tr>
-							<th scope="row">Esfuerzo del desarrollo</th>
-							<td id="esfuerzoDesarrollo"></td>
-						</tr>
-						<tr>
-							<th scope="row">Satisfacción dentro del límite de esfuerzo</th>
-							<td id="satisfaccionTotal"></td>
-						</tr>
-						<tr>
-							<th scope="row">Requisitos óptimos</th>
-							<td id="requisitosFinales"></td>
-						</tr>
-					</tbody>
-				</table>
-
-				<input type="button" class="btn btn-block btn-primary" onclick="showModal(4)" value="Marcar requisitos optimos" id="guardarSolucion" hidden=true>
-			</div>
-
-			<!--TABLA DE LEYENDA DE REQUISITOS-->
-			<br>
-			<div class="d-flex justify-content-center">
-				<h2 class="font-weight-bold"> Requisitos </h2>
-			</div>
-			<br>
-
-			<div>
-				<table class="table table-sm" id="tablaReq">
+		<div>
+			<table class="table table-sm">
+				<tbody>
 					<tr>
-						<th scope="row">Identificador</th>
-						<th id="esfuerzoDesarrollo">Requisito</th>
+						<th scope="row">Esfuerzo del desarrollo</th>
+						<td id="esfuerzoDesarrollo"></td>
 					</tr>
-				</table>
-			</div>
+					<tr>
+						<th scope="row">Satisfacción dentro del límite de esfuerzo</th>
+						<td id="satisfaccionTotal"></td>
+					</tr>
+					<tr>
+						<th scope="row">Requisitos óptimos</th>
+						<td id="requisitosFinales"></td>
+					</tr>
+				</tbody>
+			</table>
 
-			<!--TABLA DE METRICA DE CALIDAD-->
+			<input type="button" class="btn btn-block btn-primary" onclick="showModal(4)" value="Marcar requisitos optimos" id="guardarSolucion" hidden=true>
+		</div>
+	</div>
 
-			<br>
-			<div class="d-flex justify-content-center">
-				<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-					<h2 class="font-weight-bold"> Metricas de calidad </h2>
-				</div>
+	<!--TABLA DE LEYENDA DE REQUISITOS-->
+	<br>
+	<div id="Requisitos" class="tabcontent">
+		<div class="d-flex justify-content-center">
+			<h2 class="font-weight-bold"> Requisitos </h2>
+		</div>
+		<br>
+
+		<div>
+			<table class="table table-sm" id="tablaReq">
+				<tr>
+					<th scope="row">Identificador</th>
+					<th id="esfuerzoDesarrollo">Requisito</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<!--TABLA DE METRICA DE CALIDAD-->
+
+	<button class="tablink2" onclick="openMetrica('prod', this, 'green')">Productividad</button>
+	<button class="tablink2" onclick="openMetrica('cont', this, 'blue')">Contribucion</button>
+	<button class="tablink2" onclick="openMetrica('cobe', this, 'orange')">Cobertura</button>
+
+	<div id="Metricas" class="tabcontent">
+		<br>
+		<div class="d-flex justify-content-center">
+			<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
+				<h2 class="font-weight-bold"> Metricas de calidad </h2>
 			</div>
-			<br>
+		</div>
+		<br>
+		<div id="prod" class="tabcontent2">
 			<div class="d-flex justify-content-center">
 				<div id="prod" class="rounded-circle py-3 px-3" style="background-color: #fbedff">
 					<h3 class="font-weight-bold"> Productividad </h3>
-					
+
 					<h5 id="productividad"></h5>
-					
+
 				</div>
 			</div>
 			<div>
+			</div>
 
-
-
+			<div id="cont" class="tabcontent2">
 				<div class="d-flex justify-content-center">
 					<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
 						<h3 class="font-weight-bold"> Contribucion </h3>
@@ -142,10 +221,11 @@
 				</div>
 				<table id="cobertura" class="table table-sm">
 					<tbody id="filaContribucion">
-					
+
 					</tbody>
 				</table>
-
+			</div>
+			<div id="cobe" class="tabcontent2">
 				<div class="d-flex justify-content-center">
 					<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
 						<h3 class="font-weight-bold"> Cobertura </h3>
@@ -154,50 +234,50 @@
 
 				<table id="contribucion" class="table table-sm">
 					<tbody id="filaCobertura">
-						
+
 					</tbody>
 				</table>
 			</div>
-
-			<!--TABLA DE RELACIONES-->
-			<br>
-			<div class="d-flex justify-content-center">
-				<h2 class="font-weight-bold"> Relaciones </h2>
-			</div>
-			<br>
-
-			<table class="table table-sm">
-				<tbody>
-					<tr>
-						<td><select id="requisitosRelaciones1" class="custom-select" onchange="seleccionarRequisito();">
-								<option value=-1>Selecciona un requisito</option>
-							</select></td>
-						<td><select id="requisitosRelaciones2" class="custom-select">
-								<option value=-1>Selecciona el requisito</option>
-							</select></td>
-						<td><select id="tipoRelaciones" class="custom-select">
-								<option value=-1>Selecciona la relación</option>
-								<option value=0>Implicación</option>
-								<option value=1>Combinación</option>
-								<option value=2>Exclusión</option>
-							</select></td>
-					</tr>
-				</tbody>
-			</table>
-			<button type="button" class="btn btn-primary btn-block" onclick="crearRelacion()">Crear relación</button>
-			<!--TABLA DE RELACIONES CREADAS-->
-			<br>
-			<div class="d-flex justify-content-center">
-				<h4 class="font-weight-bold"> Relaciones creadas </h4>
-			</div>
-			<br>
-
-			<table class="table table-sm">
-				<tbody id="tablaRelaciones">
-				</tbody>
-			</table>
-
 		</div>
+	</div>
+	<!--TABLA DE RELACIONES-->
+	<div id="Relaciones" class="tabcontent">
+		<br>
+		<div class="d-flex justify-content-center">
+			<h2 class="font-weight-bold"> Relaciones </h2>
+		</div>
+		<br>
+
+		<table class="table table-sm">
+			<tbody>
+				<tr>
+					<td><select id="requisitosRelaciones1" class="custom-select" onchange="seleccionarRequisito();">
+							<option value=-1>Selecciona un requisito</option>
+						</select></td>
+					<td><select id="requisitosRelaciones2" class="custom-select">
+							<option value=-1>Selecciona el requisito</option>
+						</select></td>
+					<td><select id="tipoRelaciones" class="custom-select">
+							<option value=-1>Selecciona la relación</option>
+							<option value=0>Implicación</option>
+							<option value=1>Combinación</option>
+							<option value=2>Exclusión</option>
+						</select></td>
+				</tr>
+			</tbody>
+		</table>
+		<button type="button" class="btn btn-primary btn-block" onclick="crearRelacion()">Crear relación</button>
+		<!--TABLA DE RELACIONES CREADAS-->
+		<br>
+		<div class="d-flex justify-content-center">
+			<h4 class="font-weight-bold"> Relaciones creadas </h4>
+		</div>
+		<br>
+
+		<table class="table table-sm">
+			<tbody id="tablaRelaciones">
+			</tbody>
+		</table>
 	</div>
 
 	<br>

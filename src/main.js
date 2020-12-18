@@ -505,6 +505,8 @@ function calcularRequisitos(totalRequisitos, esfuerzoMaximo) {
 
 $(document).ready(function () {
 	cargarDatos();
+	
+$("#defaultOpen").click();
 });
 
 function crearProyecto() {
