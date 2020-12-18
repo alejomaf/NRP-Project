@@ -22,9 +22,6 @@ function calcularContribucion(satis) {
 			satisfaccionCliente += (valoraciones[c][soluciones[1][s].posicion].valoracion) * clientes[c].relevancia;
 		}
 
-		console.log(satisfaccionCliente);
-
-
 		var fila = document.createElement("tr");
 		fila.setAttribute("id", "filaContribucion_" + clientes[c].idCliente);
 

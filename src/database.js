@@ -73,6 +73,8 @@ async function eliminarDato(tabla, id) {
 
 //actualizarDato("relacion",{relacion: relacionValor});
 async function actualizarDato(tabla, valor) {
+	
+	console.log("actualizar");
 	await realizarConsulta("api/modificacion/modificar" + tabla + ".php", valor);
 	cargarValores();
 }

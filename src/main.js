@@ -586,10 +586,18 @@ async function guardarValoracion() {
 async function guardarRequisitos() {
 
 	var solucion = calcularSolucion();
-	for (r in solucion.subset) {
-		requisitos[solucion.subset[r].posicion].resuelto = 1;
-		actualizarDato("Requisito", requisitos[solucion.subset[r].posicion]);
+	
+	console.log(solucion);
+	for (r in solucion[0].subset) {
+		requisitos[solucion[0].subset[r].posicion].resuelto = 1;
+		actualizarDato("Requisito", requisitos[solucion[0].subset[r].posicion]);
 	}
+	
+	for (r in solucion[1]) {
+		requisitos[solucion[1][r].posicion].resuelto = 1;
+		actualizarDato("Requisito", requisitos[solucion[1][r].posicion]);
+	}
+	
 	hideModal();
 	await location.reload()
 }
