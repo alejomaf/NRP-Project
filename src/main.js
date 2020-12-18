@@ -96,14 +96,16 @@ async function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 
 	nombreRequisito.setAttribute("scope", "col");
 	nombreRequisito.innerHTML = etiqueta;
-	nombreRequisito.style.float = "left";
+	//nombreRequisito.style.text-align = "center";
+    nombreRequisito.style.margin = "auto";
 	nombreRequisito.style.position = "relative";
 	nombreRequisito.style.top = "50%";
 
 	var check = document.createElement("input");
 	check.setAttribute("id", "check_" + idRequisito);
 	check.setAttribute("type", "checkbox");
-	check.style.float = "left";
+	//check.style.text-align = "center";
+    check.style.margin = "auto";
 	check.style.position = "relative";
 	check.style.top = "50%";
 
@@ -116,6 +118,7 @@ async function addRequisito(nombre, relevancia, idRequisito, resuelto) {
 	var cabeza2 = document.createElement("th");
 	cabeza2.append(cabeza);
 
+	cabeza2.setAttribute("class", "mx-auto");
 
 	cabeza2.style.textAlign = "center"
 	var prioridadAux = $("#nombreColumnas .prioridadCliente");
@@ -351,13 +354,24 @@ function calcularSolucion() {
 }
 
 async function calcularTodo() {
-
+	
 	var sol = calcularSolucion()[0];
 	var forz = calcularSolucion()[1];
 
-	$("#satisfaccionTotal").text(sol.maxValue);
+	var satForz = 0;
+	
+	for(r in forz){
+		satForz += calcularSatisfaccionRequisito(requisitos[forz[r].posicion]);
+	}
+	
+	satForz += sol.maxValue;
+	$("#satisfaccionTotal").text(satForz);
 
 	var esfuerzoFinal = 0;
+	
+	for (var i = 0; i < forz.length; i++) {
+		esfuerzoFinal += parseInt(forz[i].esfuerzo);
+	}
 
 	for (var i = 0; i < sol.subset.length; i++) {
 		esfuerzoFinal += parseInt(sol.subset[i].esfuerzo);
@@ -376,7 +390,7 @@ async function calcularTodo() {
 
 	if (requisitosOptimos != "" && sol.subset.length != 0)
 		requisitosOptimos += ", ";
-	
+
 	for (var i = 0; i < sol.subset.length; i++) {
 		requisitosOptimos += sol.subset[i].nombre;
 		if (i < sol.subset.length - 1) {
@@ -386,17 +400,23 @@ async function calcularTodo() {
 
 	$("#requisitosFinales").text(requisitosOptimos);
 
-
-	var maxContribuidor = clientes[0];
-	var contribuidor = 0;
-	for (var i = 0; i < clientes.length; i++) {
-		var contr = contribucion(clientes[i], sol.subset);
-		if (contr > contribuidor) {
-			contribuidor = contr;
-			maxContribuidor = clientes[i];
+	/*
+		var maxContribuidor = clientes[0];
+		var contribuidor = 0;
+		for (var i = 0; i < clientes.length; i++) {
+			var contr = contribucion(clientes[i], sol.subset);
+			if (contr > contribuidor) {
+				contribuidor = contr;
+				maxContribuidor = clientes[i];
+			}
 		}
-	}
-	$("#contribucion").text(maxContribuidor.nombre);
+		$("#contribucion").text(maxContribuidor.nombre);
+		*/
+	
+	
+	calcularProductividad(esfuerzoFinal, satForz);
+	calcularContribucion(satForz);
+	calcularCobertura();
 
 	$("#guardarSolucion").attr("hidden", false);
 }
@@ -409,6 +429,7 @@ function contribucion(cliente, solucion) {
 	}
 	return suma * parseInt(cliente.relevancia);
 }
+
 
 function addReqConValor(requisito) {
 	var req = {

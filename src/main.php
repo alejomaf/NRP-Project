@@ -8,6 +8,7 @@
 	<script src="main.js"></script>
 	<script src="js/relaciones.js"></script>
 	<script src="database.js"></script>
+	<script src="js/metricas.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -91,23 +92,13 @@
 							<th scope="row">Requisitos óptimos</th>
 							<td id="requisitosFinales"></td>
 						</tr>
-						<!--
-						<tr>
-							<th scope="row">Cobertura de los requisitos</th>
-							<td id="productividad">WIP</td>
-						</tr>
-
-						<tr>
-							<th scope="row">Cliente que más contribuye</th>
-							<td id="contribucion"></td>
-						</tr>
--->
 					</tbody>
 				</table>
-				
+
 				<input type="button" class="btn btn-block btn-primary" onclick="showModal(4)" value="Marcar requisitos optimos" id="guardarSolucion" hidden=true>
 			</div>
 
+			<!--TABLA DE LEYENDA DE REQUISITOS-->
 			<br>
 			<div class="d-flex justify-content-center">
 				<h2 class="font-weight-bold"> Requisitos </h2>
@@ -123,6 +114,50 @@
 				</table>
 			</div>
 
+			<!--TABLA DE METRICA DE CALIDAD-->
+
+			<br>
+			<div class="d-flex justify-content-center">
+				<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
+					<h2 class="font-weight-bold"> Metricas de calidad </h2>
+				</div>
+			</div>
+			<br>
+			<div class="d-flex justify-content-center">
+				<div id="prod" class="rounded-circle py-3 px-3" style="background-color: #fbedff">
+					<h3 class="font-weight-bold"> Productividad </h3>
+					
+					<h5 id="productividad"></h5>
+					
+				</div>
+			</div>
+			<div>
+
+
+
+				<div class="d-flex justify-content-center">
+					<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
+						<h3 class="font-weight-bold"> Contribucion </h3>
+					</div>
+				</div>
+				<table id="cobertura" class="table table-sm">
+					<tbody id="filaContribucion">
+					
+					</tbody>
+				</table>
+
+				<div class="d-flex justify-content-center">
+					<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
+						<h3 class="font-weight-bold"> Cobertura </h3>
+					</div>
+				</div>
+
+				<table id="contribucion" class="table table-sm">
+					<tbody id="filaCobertura">
+						
+					</tbody>
+				</table>
+			</div>
 
 			<!--TABLA DE RELACIONES-->
 			<br>
