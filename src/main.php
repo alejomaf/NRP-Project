@@ -92,11 +92,11 @@
 		</div>
 	</div>
 
-	<button class="tablink" onclick="openPage('Calculo', this, 'FFF9AA')" id="defaultOpen">Calculo</button>
-	<button class="tablink" onclick="openPage('Resultado', this, 'FFBFBF')">Resultado</button>
-	<button class="tablink" onclick="openPage('Requisitos', this, 'BFD1EA')">Requisitos</button>
-	<button class="tablink" onclick="openPage('Metricas', this, 'CCC8EE')">Metricas</button>
-	<button class="tablink" onclick="openPage('Relaciones', this, 'BFEDBF')">Relaciones</button>
+	<button class="tablink" onclick="openPage('Calculo', this, 'fbedff')" id="defaultOpen">Calculo</button>
+	<button class="tablink" onclick="openPage('Resultado', this, 'fbedff')">Resultado</button>
+	<button class="tablink" onclick="openPage('Requisitos', this, 'fbedff')">Requisitos</button>
+	<button class="tablink" onclick="openPage('Metricas', this, 'fbedff')">Metricas</button>
+	<button class="tablink" onclick="openPage('Relaciones', this, 'fbedff')">Relaciones</button>
 
 
 	<div id="Calculo" class="tabcontent">
@@ -135,7 +135,7 @@
 				</div>
 
 				<br>
-				<input type="button" class="btn btn-block btn-primary" onclick="calcularTodo()" value="Calcular requisitos óptimos">
+				<input id="Calc" type="button" class="btn btn-block btn-primary" onclick="calcularTodo()" value="Calcular requisitos óptimos">
 				<br>
 			</div>
 		</div>
@@ -147,26 +147,29 @@
 			</div>
 		</div>
 		<br>
+		<div class="d-flex justify-content-center">
+			<div class="col-md-8 mb-3">
+				<div>
+					<table class="table table-sm">
+						<tbody>
+							<tr>
+								<th scope="row">Esfuerzo del desarrollo</th>
+								<td id="esfuerzoDesarrollo"></td>
+							</tr>
+							<tr>
+								<th scope="row">Satisfacción dentro del límite de esfuerzo</th>
+								<td id="satisfaccionTotal"></td>
+							</tr>
+							<tr>
+								<th scope="row">Requisitos óptimos</th>
+								<td id="requisitosFinales"></td>
+							</tr>
+						</tbody>
+					</table>
 
-		<div>
-			<table class="table table-sm">
-				<tbody>
-					<tr>
-						<th scope="row">Esfuerzo del desarrollo</th>
-						<td id="esfuerzoDesarrollo"></td>
-					</tr>
-					<tr>
-						<th scope="row">Satisfacción dentro del límite de esfuerzo</th>
-						<td id="satisfaccionTotal"></td>
-					</tr>
-					<tr>
-						<th scope="row">Requisitos óptimos</th>
-						<td id="requisitosFinales"></td>
-					</tr>
-				</tbody>
-			</table>
-
-			<input type="button" class="btn btn-block btn-primary" onclick="showModal(4)" value="Marcar requisitos optimos" id="guardarSolucion" hidden=true>
+					<input type="button" class="btn btn-block btn-primary" onclick="showModal(4)" value="Marcar requisitos optimos" id="guardarSolucion" hidden=true>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -174,26 +177,38 @@
 	<br>
 	<div id="Requisitos" class="tabcontent">
 		<div class="d-flex justify-content-center">
-			<h2 class="font-weight-bold"> Requisitos </h2>
-		</div>
-		<br>
+			<div class="col-md-8 mb-3">
+				<div class="d-flex justify-content-center">
+					<h2 class="font-weight-bold"> Requisitos </h2>
+				</div>
+				<br>
 
-		<div>
-			<table class="table table-sm" id="tablaReq">
-				<tr>
-					<th scope="row">Identificador</th>
-					<th id="esfuerzoDesarrollo">Requisito</th>
-				</tr>
-			</table>
+				<div>
+					<table class="table table-sm" id="tablaReq">
+						<tr>
+							<th scope="row">Identificador</th>
+							<th id="esfuerzoDesarrollo">Requisito</th>
+						</tr>
+					</table>
+					<div class="d-flex justify-content-center">
+						<h2 class="font-weight-bold"> Requisitos finalizados </h2>
+					</div>
+					<table class="table table-sm" id="tablaReqFin">
+						<tr>
+							<th scope="row">Identificador</th>
+							<th id="esfuerzoDesarrolloFin">Requisito</th>
+						</tr>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!--TABLA DE METRICA DE CALIDAD-->
 
-	<button class="tablink2" onclick="openMetrica('prod', this, 'green')">Productividad</button>
-	<button class="tablink2" onclick="openMetrica('cont', this, 'blue')">Contribucion</button>
-	<button class="tablink2" onclick="openMetrica('cobe', this, 'orange')">Cobertura</button>
+
 
 	<div id="Metricas" class="tabcontent">
+
 		<br>
 		<div class="d-flex justify-content-center">
 			<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
@@ -201,37 +216,36 @@
 			</div>
 		</div>
 		<br>
-		<div id="prod" class="tabcontent2">
-			<div class="d-flex justify-content-center">
-				<div id="prod" class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-					<h3 class="font-weight-bold"> Productividad </h3>
+		<div class="d-flex justify-content-center">
+			<div id="prod" class="rounded-circle py-3 px-3" style="background-color: #fbedff">
+				<h3 class="font-weight-bold"> Productividad </h3>
 
-					<h5 id="productividad"></h5>
+				<h5 id="productividad"></h5>
 
-				</div>
 			</div>
-			<div>
-			</div>
+		</div>
 
-			<div id="cont" class="tabcontent2">
-				<div class="d-flex justify-content-center">
-					<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-						<h3 class="font-weight-bold"> Contribucion </h3>
-					</div>
-				</div>
+		<div class="d-flex justify-content-center">
+			<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
+				<h3 class="font-weight-bold"> Contribucion </h3>
+			</div>
+		</div>
+		<div class="d-flex justify-content-center">
+			<div class="col-md-8 mb-3">
 				<table id="cobertura" class="table table-sm">
 					<tbody id="filaContribucion">
 
 					</tbody>
 				</table>
 			</div>
-			<div id="cobe" class="tabcontent2">
-				<div class="d-flex justify-content-center">
-					<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-						<h3 class="font-weight-bold"> Cobertura </h3>
-					</div>
-				</div>
-
+		</div>
+		<div class="d-flex justify-content-center">
+			<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
+				<h3 class="font-weight-bold"> Cobertura </h3>
+			</div>
+		</div>
+		<div class="d-flex justify-content-center">
+			<div class="col-md-8 mb-3">
 				<table id="contribucion" class="table table-sm">
 					<tbody id="filaCobertura">
 
