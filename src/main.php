@@ -24,8 +24,8 @@
 
 		/* Style tab links */
 		.tablink {
-			background-color: #BBB;
-			color: black;
+			background-color: #2979FF;
+			color: white;
 			float: left;
 			border: none;
 			outline: none;
@@ -81,22 +81,22 @@
 
 </script>
 
-<body style="background-color:#fbedff">
+<body style="background-color:#e1e9f4">
 
-
+	<br>
 	<div class="d-flex justify-content-center">
-		<div class="rounded-circle py-3 px-3" style="background-color: #fbedff" align="center">
-			<h3> Problema de la siguiente versión </h3>
+		<div class="rounded-circle py-3 px-3" align="center">
+			<h3 class="font-weight-bold"> <u>Problema de la siguiente versión</u> </h3>
 			<h1 class="font-weight-bold" id="nomProyecto"></h1>
 			<h5 id="limiteEsfuerzo"></h5>
 		</div>
 	</div>
-
-	<button class="tablink" onclick="openPage('Calculo', this, 'fbedff')" id="defaultOpen">Calculo</button>
-	<button class="tablink" onclick="openPage('Resultado', this, 'fbedff')">Resultado</button>
-	<button class="tablink" onclick="openPage('Requisitos', this, 'fbedff')">Requisitos</button>
-	<button class="tablink" onclick="openPage('Metricas', this, 'fbedff')">Metricas</button>
-	<button class="tablink" onclick="openPage('Relaciones', this, 'fbedff')">Relaciones</button>
+	<br>
+	<button class="tablink btn btn-outline-primary" onclick="openPage('Calculo', this, '82B1FF')" id="defaultOpen">Cálculo</button>
+	<button class="tablink btn btn-outline-primary" onclick="openPage('Resultado', this, '82B1FF')">Resultado</button>
+	<button class="tablink btn btn-outline-primary" onclick="openPage('Requisitos', this, '82B1FF')">Requisitos</button>
+	<button class="tablink btn btn-outline-primary" onclick="openPage('Metricas', this, '82B1FF')">Métricas</button>
+	<button class="tablink btn btn-outline-primary" onclick="openPage('Relaciones', this, '82B1FF')">Relaciones</button>
 
 
 	<div id="Calculo" class="tabcontent">
@@ -104,13 +104,13 @@
 			<div class="col-md-8 mb-3">
 				<div>
 					<div class="btn btn-group w-100">
-						<button type="button" class="btn btn-primary mx-2" onclick="showModal(0)">Añadir cliente
+						<button type="button" class="btn btn-outline-primary mx-2" onclick="showModal(0)">Añadir cliente
 						</button>
 
-						<button type="button" class="btn btn-primary mx-2" onclick="showModal(1)">Añadir requisito
+						<button type="button" class="btn btn-outline-primary mx-2" onclick="showModal(1)">Añadir requisito
 						</button>
 
-						<button type="submit" class="btn btn-primary mx-2" onclick="showModal(3)">Guardar
+						<button type="submit" class="btn btn-outline-primary mx-2" onclick="showModal(3)">Guardar
 						</button>
 					</div>
 					<br><br>
@@ -135,16 +135,14 @@
 				</div>
 
 				<br>
-				<input id="Calc" type="button" class="btn btn-block btn-primary" onclick="calcularTodo()" value="Calcular requisitos óptimos">
+				<input id="Calc" type="button" class="btn btn-block btn-outline-primary" onclick="calcularTodo()" value="Calcular requisitos óptimos">
 				<br>
 			</div>
 		</div>
 	</div>
 	<div id="Resultado" class="tabcontent">
 		<div class="d-flex justify-content-center">
-			<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-				<h2 class="font-weight-bold"> Resultados </h2>
-			</div>
+			<h2 class="font-weight-bold"> <u>Resultados</u> </h2>
 		</div>
 		<br>
 		<div class="d-flex justify-content-center">
@@ -167,19 +165,18 @@
 						</tbody>
 					</table>
 
-					<input type="button" class="btn btn-block btn-primary" onclick="showModal(4)" value="Marcar requisitos optimos" id="guardarSolucion" hidden=true>
+					<input type="button" class="btn btn-block btn-outline-primary" onclick="showModal(4)" value="Marcar requisitos optimos" id="guardarSolucion" hidden=true>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!--TABLA DE LEYENDA DE REQUISITOS-->
-	<br>
 	<div id="Requisitos" class="tabcontent">
 		<div class="d-flex justify-content-center">
 			<div class="col-md-8 mb-3">
 				<div class="d-flex justify-content-center">
-					<h2 class="font-weight-bold"> Requisitos </h2>
+					<h2 class="font-weight-bold"> <u>Requisitos</u> </h2>
 				</div>
 				<br>
 
@@ -191,7 +188,7 @@
 						</tr>
 					</table>
 					<div class="d-flex justify-content-center">
-						<h2 class="font-weight-bold"> Requisitos finalizados </h2>
+						<h2 class="font-weight-bold"> <u>Requisitos finalizados</u> </h2>
 					</div>
 					<table class="table table-sm" id="tablaReqFin">
 						<tr>
@@ -209,26 +206,21 @@
 
 	<div id="Metricas" class="tabcontent">
 
-		<br>
 		<div class="d-flex justify-content-center">
-			<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-				<h2 class="font-weight-bold"> Metricas de calidad </h2>
-			</div>
+			<h2 class="font-weight-bold"> <u>Métricas de calidad</u> </h2>
 		</div>
 		<br>
 		<div class="d-flex justify-content-center">
-			<div id="prod" class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-				<h3 class="font-weight-bold"> Productividad </h3>
 
+			<div id=prod>
+				<h3 class="font-weight-bold"> <u>Productividad</u> </h3>
+				<br>
 				<h5 id="productividad"></h5>
-
 			</div>
 		</div>
 
 		<div class="d-flex justify-content-center">
-			<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-				<h3 class="font-weight-bold"> Contribucion </h3>
-			</div>
+			<h3 class="font-weight-bold"> <u>Contribucion</u> </h3>
 		</div>
 		<div class="d-flex justify-content-center">
 			<div class="col-md-8 mb-3">
@@ -240,9 +232,7 @@
 			</div>
 		</div>
 		<div class="d-flex justify-content-center">
-			<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-				<h3 class="font-weight-bold"> Cobertura </h3>
-			</div>
+			<h3 class="font-weight-bold"> <u>Cobertura</u> </h3>
 		</div>
 		<div class="d-flex justify-content-center">
 			<div class="col-md-8 mb-3">
@@ -256,9 +246,8 @@
 	</div>
 	<!--TABLA DE RELACIONES-->
 	<div id="Relaciones" class="tabcontent">
-		<br>
 		<div class="d-flex justify-content-center">
-			<h2 class="font-weight-bold"> Relaciones </h2>
+			<h2 class="font-weight-bold"> <u>Relaciones</u> </h2>
 		</div>
 		<br>
 
@@ -280,11 +269,11 @@
 				</tr>
 			</tbody>
 		</table>
-		<button type="button" class="btn btn-primary btn-block" onclick="crearRelacion()">Crear relación</button>
+		<button type="button" class="btn btn-outline-primary btn-block" onclick="crearRelacion()">Crear relación</button>
 		<!--TABLA DE RELACIONES CREADAS-->
 		<br>
 		<div class="d-flex justify-content-center">
-			<h4 class="font-weight-bold"> Relaciones creadas </h4>
+			<h4 class="font-weight-bold"> <u>Relaciones creadas</u> </h4>
 		</div>
 		<br>
 

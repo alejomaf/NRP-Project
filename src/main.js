@@ -346,7 +346,6 @@ function calcularSolucion() {
 		}
 	}
 	if (esfuerzoSeleccionado > parseInt(proyecto.limiteEsfuerzo)) {
-		console.log("se te fue " + esfuerzoSeleccionado);
 		return [];
 	}
 	var sol = calcularRequisitos(requisitosFinales, parseInt(proyecto.limiteEsfuerzo) - esfuerzoSeleccionado);
@@ -505,7 +504,6 @@ function calcularRequisitos(totalRequisitos, esfuerzoMaximo) {
 }
 
 $(document).ready(function () {
-	console.log("idRequisito")
 	cargarDatos();
 
 	$("#defaultOpen").click();
@@ -551,7 +549,6 @@ async function cargarDatos() {
 
 function listarReq(nombre, idRequisito) {
 
-	console.log(idRequisito);
 	var etiqueta = "R" + (requisitos.length == 0 ? 0 : parseInt(idRequisito));
 
 	//añade la leyenda de requisitos totales
@@ -616,7 +613,6 @@ async function guardarRequisitos() {
 
 	var solucion = calcularSolucion();
 
-	console.log(solucion);
 	for (r in solucion[0].subset) {
 		requisitos[solucion[0].subset[r].posicion].resuelto = 1;
 		actualizarDato("Requisito", requisitos[solucion[0].subset[r].posicion]);

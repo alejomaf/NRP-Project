@@ -11,14 +11,12 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body style="background-color:#fbedff">
+<body style="background-color:#e1e9f4">
 
 
 	<br>
 	<div class="d-flex justify-content-center">
-		<div class="rounded-circle py-3 px-3" style="background-color: #fbedff">
-			<h2 class="font-weight-bold"> Problema de la siguiente versión </h2>
-		</div>
+			<h2 class="font-weight-bold"> <u>Problema de la siguiente versión</u> </h2>
 	</div>
 	<br>
 
@@ -26,7 +24,7 @@
 		<div class="col-md-8 mb-3">
 
 			<div>
-				<button type="button" class="btn btn-block btn-primary my-4" onclick="mostrarCreacionProyecto()">Crear proyecto
+				<button type="button" class="btn btn-block btn-outline-primary my-4" onclick="mostrarCreacionProyecto()">Crear proyecto
 				</button>
 				<table class="table table-sm" id="tabla">
 					<h3>Tabla de proyectos</h3>
